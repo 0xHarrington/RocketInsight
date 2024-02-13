@@ -10,3 +10,9 @@ Frontend progress:
 -Included CSS for the above elements for easy inclusion in the webpage.
 
 TBD: Set up create-react-app on WSL (Encountering errors)
+
+Temporary fix: Used npm-windows installer to install npm and create-react-app.
+
+TO RUN:
+
+Download all files into a folder and run html file
