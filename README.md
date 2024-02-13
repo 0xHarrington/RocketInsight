@@ -1,3 +1,13 @@
+
+TO RUN:
+
+Download all files into a folder and run html file
+
+IGNORE rocketinsight folder, that is WIP and should be functional by 2/15
+
+The below text is useful only after I get the app up and running
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
