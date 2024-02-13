@@ -24,3 +24,5 @@ Temporary fix: Used npm-windows installer to install npm and create-react-app.
 TO RUN:
 
 Download all files into a folder and run html file
+
+IGNORE rocketinsight folder, that is WIP and should be functional by 2/15
