@@ -17,3 +17,10 @@ The RocketInsight codebase is organized into three primary directories, reflecti
 - **frontend**: Contains the code for the user interface, developed using React, Redux, and D3.js to create interactive data visualizations.
 - **backend**: Includes the server-side logic, utilizing Flask for data service provision and web3.py for blockchain data interaction.
 - **prototyping**: Focuses on data analysis and prototyping, employing Jupyter notebooks and libraries such as Pandas, NumPy, and scikit-learn for initial data exploration and analysis.
+TBD: Set up create-react-app on WSL (Encountering errors)
+
+Temporary fix: Used npm-windows installer to install npm and create-react-app.
+
+TO RUN:
+
+Download all files into a folder and run html file
