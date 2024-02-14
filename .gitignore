@@ -1,3 +1,6 @@
+### Working on a mac
+.DS_Store
+
 #### Python gitignore ####
 # Byte-compiled / optimized / DLL files
 __pycache__/
