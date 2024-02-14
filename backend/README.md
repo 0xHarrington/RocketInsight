@@ -51,14 +51,48 @@ The backend service exposes the following RESTful API endpoints:
    - Returns the interaction history of a user with lending and borrowing markets, starting with the initial deposit of rETH.
    - Required Parameters: User address(es), Market(s).
 
-## Getting Started
+# Installation instructions
 
-To set up the RocketInsight backend service:
+## Install Miniconda3
 
-1. Ensure Python 3.8+ is installed.
-2. Clone the repository and navigate to the backend directory.
-3. Install dependencies using `pip install -r requirements.txt`.
-4. Start the Flask server with `python app.py`.
+### MacOS and Linux/WSL
+
+- Download Miniconda3 from the [official website](https://docs.conda.io/en/latest/miniconda.html).
+- Open Terminal, navigate to the download directory, and run the installer:
+
+  ```bash
+  bash Miniconda3-latest-MacOSX-x86_64.sh # MacOS
+  bash Miniconda3-latest-Linux-x86_64.sh # Linux
+  ```
+
+- Follow the installation prompts
+
+```bash
+pip install -r requirements.txt
+```
+
+### Windows
+
+- Download the Windows Miniconda installer from the [https://docs.anaconda.com/free/miniconda/miniconda-other-installer-links/](official website) and run it.
+- Follow the on-screen instructions.
+
+## Set Up Environment
+
+- Open Anaconda Prompt from the Start Menu.
+- Create and activate a new conda environment:
+
+```bash
+conda create --name rocketinsight python=3.8
+conda activate rocketinsight
+```
+
+## Install Dependencies
+
+Install the necessary libraries using pip:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Contribution
 
