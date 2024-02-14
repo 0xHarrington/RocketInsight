@@ -78,6 +78,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<<<<<<< HEAD
 
 # RocketInsight: Enhancing Transparency in rETH Market Dynamics
 
@@ -107,3 +108,5 @@ TO RUN:
 Download all files into a folder and run html file
 
 IGNORE rocketinsight folder, that is WIP and should be functional by 2/15
+=======
+>>>>>>> 0641a59 (Throw into subdirectory)
