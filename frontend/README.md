@@ -1,18 +1,18 @@
+# RocketInsight Frontend
 
-TO RUN:
+## Setup
 
-Download all files into a folder and run html file
+First, ensure you have Node.js installed on your system.
 
-IGNORE rocketinsight folder, that is WIP and should be functional by 2/15
+### Install Dependencies
 
-The below text is useful only after I get the app up and running
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Navigate to the frontend directory and run:
 
-# Getting Started with Create React App
+```bash
+npm install
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
+## Available scripts
 
 In the project directory, you can run:
 
