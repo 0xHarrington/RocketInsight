@@ -1,3 +1,5 @@
+import random
+import string
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -50,20 +52,57 @@ with app.app_context():
 
     # Populate tables with dummy data
     # For example:
-    dummy_market = AllMarkets(market_name='Dummy Market', url='http://dummy.com', total_supply=10000, total_borrow=5000, supply_apy=0.05, borrow_apy=0.08)
-    db.session.add(dummy_market)
+    def generate_random_string(length):
+        letters = string.ascii_letters
+        return ''.join(random.choice(letters) for _ in range(length))
 
-    dummy_historical_data = HistoricalData(timestamp=1234567890, total_supplied=8000, total_borrowed=4000)
-    db.session.add(dummy_historical_data)
+    def generate_random_data():
+        # Generate random data for AllMarkets table
+        random_market_name = generate_random_string(10)
+        random_url = "http://" + generate_random_string(10) + ".com"
+        random_total_supply = random.randint(1000, 100000)
+        random_total_borrow = random.randint(500, 50000)
+        random_supply_apy = random.uniform(0.01, 0.2)
+        random_borrow_apy = random.uniform(0.01, 0.2)
+        dummy_market = AllMarkets(market_name=random_market_name, url=random_url, total_supply=random_total_supply, total_borrow=random_total_borrow, supply_apy=random_supply_apy, borrow_apy=random_borrow_apy)
+        db.session.add(dummy_market)
 
-    dummy_transaction = Transaction(reserve='Dummy Reserve', user='dummy_user_address', amount=1000, timestamp=1234567890, log_index=1, transaction_index=1, transaction_hash='dummy_tx_hash', block_hash='dummy_block_hash', block_number=12345, event_type='Supply')
-    db.session.add(dummy_transaction)
+        # Generate random data for HistoricalData table
+        random_timestamp = random.randint(1234567890, 1634567890)
+        random_total_supplied = random.randint(1000, 9000)
+        random_total_borrowed = random.randint(500, 4000)
+        dummy_historical_data = HistoricalData(timestamp=random_timestamp, total_supplied=random_total_supplied, total_borrowed=random_total_borrowed)
+        db.session.add(dummy_historical_data)
 
-    dummy_user_history = UserHistory(user='dummy_user', reserve='Dummy Reserve', timestamp=1234567890, block_number=12345, block_hash='dummy_block_hash', transaction_hash='dummy_tx_hash', amount=1000, event_type='Borrow')
-    db.session.add(dummy_user_history)
+        # Generate random data for Transaction table
+        random_reserve = generate_random_string(10)
+        random_user = generate_random_string(10)
+        random_amount = random.randint(100, 1000)
+        random_log_index = random.randint(1, 100)
+        random_transaction_index = random.randint(1, 100)
+        random_transaction_hash = generate_random_string(32)
+        random_block_hash = generate_random_string(32)
+        random_block_number = random.randint(10000, 50000)
+        random_event_type = random.choice(['Supply', 'Borrow'])
+        dummy_transaction = Transaction(reserve=random_reserve, user=random_user, amount=random_amount, timestamp=random_timestamp, log_index=random_log_index, transaction_index=random_transaction_index, transaction_hash=random_transaction_hash, block_hash=random_block_hash, block_number=random_block_number, event_type=random_event_type)
+        db.session.add(dummy_transaction)
 
-    # Commit the changes to the database
-    db.session.commit()
+        # Generate random data for UserHistory table
+        random_user = generate_random_string(10)
+        random_reserve = generate_random_string(10)
+        random_block_number = random.randint(10000, 50000)
+        random_block_hash = generate_random_string(32)
+        random_transaction_hash = generate_random_string(32)
+        random_amount = random.randint(100, 1000)
+        random_event_type = random.choice(['Supply', 'Borrow'])
+        dummy_user_history = UserHistory(user=random_user, reserve=random_reserve, timestamp=random_timestamp, block_number=random_block_number, block_hash=random_block_hash, transaction_hash=random_transaction_hash, amount=random_amount, event_type=random_event_type)
+        db.session.add(dummy_user_history)
+
+        # Commit the changes to the database
+        db.session.commit()
+
+    # Call the function to generate and add random data to the tables
+    generate_random_data()
     
     # Check if tables are created
     print("AllMarkets Table: ", db.session.query(AllMarkets).all())
