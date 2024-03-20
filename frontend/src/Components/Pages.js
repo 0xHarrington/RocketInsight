@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import axios from 'axios';
 import { Container } from 'react-bootstrap';
 import './style.css'
 
@@ -40,7 +41,7 @@ function Pages() {
           <h1>Welcome to RocketInsight</h1>
           <br />
           <div className ="subheading">
-            <h3 align = "center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+            <h3 align = "center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
           </div>
           <br />
           <br />
@@ -50,20 +51,23 @@ function Pages() {
           <table>
             <tr>
                 <td>
-                  <div className = "thead">
-                    <div className = "firstc">    
-                    #
-                    </div>
-                  </div>  
-                </td>
-                <td>
                   <div className = "thead">  
                     Protocol
                   </div> 
                 </td>
                 <td>
                   <div className = "thead">   
+                    URL
+                  </div>  
+                </td>
+                <td>
+                  <div className = "thead">   
                     Total Supplied
+                  </div>  
+                </td>
+                <td>
+                  <div className = "thead">   
+                    Total Borrowed
                   </div>  
                 </td>
                 <td>
@@ -73,65 +77,66 @@ function Pages() {
                 </td>
                 <td>
                   <div className = "thead">     
-                    Oracle Price
+                    Borrow APY
                   </div>  
                 </td>
             </tr>
             <tr>  
               <td>
-                <div className = "firstc">   
-                1
-                </div>
-              </td>
-              <td>
                 <a className = {showpage===3? "nav-link active": "nav-link" } onClick={()=>handlepage(3)}><img src = "logo1.jpeg" /></a>
               </td>
+              <td><a href ="https://app.aave.com/reserve-overview/?underlyingAsset=0xae78736cd615f374d3085123a210448e74fc6393&marketName=proto_mainnet_v3">AAVE</a></td>
               <td>
                 47.68K
+              </td>
+              <td>
+                74.86K
               </td>
               <td>   
                 0.01%
               </td>
               <td>   
-                $2578.47
+                0.01%
               </td>
             </tr>
             <tr>
-              <td>
-                <div class = "firstc"> 
-                2
-                </div>
-              </td>
               <td>
                 <img src = "logo2.png" />
               </td>
               <td>
+                <a href = "https://app.compound.finance/markets/weth-mainnet">Compound</a>
+              </td>
+              <td>
                 47.68K
+              </td>
+              <td>
+                74.86K
               </td>
               <td>   
                 0.01%
               </td>
               <td>   
-                $2578.47
+                0.01%
               </td>
             </tr>
             <tr>
               <td>
-                <div class = "firstc">
-                3
-                </div>
-              </td>
-              <td>
                 <img src = "logo3.png" />
               </td> 
               <td>
+                <a href = "https://app.uniswap.org/explore/tokens/ethereum/0xae78736cd615f374d3085123a210448e74fc6393">Uniswap</a>
+              </td>
+              <td>
                 47.68K
+              </td>
+              <td>
+                74.86K
               </td>
               <td>   
                 0.01%
               </td>
               <td>   
-                $2578.47
+                0.01%
               </td>   
             </tr>
           </table>

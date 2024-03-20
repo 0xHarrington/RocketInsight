@@ -1,8 +1,13 @@
 * { /*General Styles*/
   margin: 0;
   padding: 0;
-  font-family: "Verdana", sans-serif;
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), url(./fonts/RobotoFlex-Regular.ttf) format('truetype');
 }
 
 html,body { 
@@ -11,10 +16,10 @@ html,body {
 } /*Done to ensure background color covers entire page*/
 
 .VTEE {/*Logo text*/
-  font-size: xx-large;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
   text-align:center;
   font-weight: 900;  
-  color: #8dda24;
+  color: #FF7518;
   margin-top:10px;
   margin-bottom: 10px;
   }
@@ -25,6 +30,7 @@ html,body {
   color: #fff;
   font-size: large;
   font-weight: 500;
+  padding-top:12px;
   padding-left: 15px;
   background-color: black;
 }
@@ -34,7 +40,11 @@ html,body {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
-  color:#8dda24;
+  color:#B7410E;
+}
+
+.subheading .h3 {
+  font-size:0.5rem !important;
 }
 
 .marginals ul li {/*Removing bullet points and keeping list at center of header */
@@ -72,7 +82,8 @@ html,body {
 }
 
 .thead {
-  color: gold !important;
+  font-size: 1.5rem;
+  color: rgba(255, 213, 0, 0.838) !important;
   font-weight: bold !important;
 }
 
@@ -91,9 +102,12 @@ html,body {
 
 .page h1 { /*Main page heading*/
   text-align: center;
-  color:#8dda24;
+  color:white;
+  font-weight: 700;
+  font-size: 3.25rem;
   margin-left: auto;
   margin-right: auto;
+  padding-top:25px;
 }
 
 .page a { /*For all links on page designed to look like button*/
@@ -220,7 +234,7 @@ html,body {
 }
 
 #selected { /*To show which button is currently 'selected' */
-  color: #00A86B;
+  color: #FF7518;
 }
 
 main table { /*Align table to center of page*/
@@ -235,6 +249,7 @@ table, td { /*Table displaying list of items*/
   border-collapse:collapse;
   padding-bottom:10px;
   text-align: center;
+  font-size: 1.1rem;
 }
 
 table, th, td {
@@ -370,11 +385,10 @@ max-width: 100%;
       
       nav { /*Navigation menu*/
         background: black;
-        position: fixed;
         margin: auto;
         width: 100%;
         padding: 15px;
-        z-index: 1;
+        z-index: 5;
       }
             
       .here { /*Indicate current page*/
@@ -390,7 +404,7 @@ max-width: 100%;
       }
 
       .VTEE {/*Logo text*/
-        font-size: x-large;
+        font-size: 1.83rem;
         text-align:left;
         margin-top: 0px; 
         margin-bottom: 0px;  
@@ -400,15 +414,15 @@ max-width: 100%;
         border-style: hidden;
         text-decoration: none;
         color: #fff;
-        font-size: large;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 550;
         padding: 15px;
         border-radius: 10px;
         background-color: black;
       }
       
       .marginals button:hover, .marginals a:hover {/*Hover indication for aesthetic purposes*/
-        background: #8dda24;
+        background: #FF7518;
         color: black;
       }
       
@@ -441,7 +455,7 @@ max-width: 100%;
       }
       
       .page { /*Affects all content between header and footer*/
-        padding-top: 4.5rem; /*Ensuring header and footer do not overlap with body text*/
+        padding-top: 0rem; /*Ensuring header and footer do not overlap with body text*/
       }
 
       table, td { /*Table displaying list of items*/
@@ -485,8 +499,8 @@ max-width: 100%;
       }
 
       #restupper a:hover { /*Hover indication for aesthetic purposes*/
-        border-color: #8dda24;
-        color: #8dda24;
+        border-color: #FF7518;
+        color: #FF7518;
       }
 
       #c-options { /*Allow user to filter by category*/
