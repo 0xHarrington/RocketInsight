@@ -1,6 +1,7 @@
 import pandas as pd
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from compound_test import historic_data
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -8,17 +9,14 @@ db = SQLAlchemy(app)
 
 class AllMarkets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.Integer)
     market = db.Column(db.String(255))
-    data_type = db.Column(db.String(255))
-    value = db.Column(db.Float)
 
 class HistoricalData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.Integer)
-    total_supplied = db.Column(db.Integer)
-    total_borrowed = db.Column(db.Integer)
-    market_name = db.Column(db.String(255))
+    Timestamp = db.Column(db.Float)
+    Market = db.Column(db.String(255))
+    Data_Type = db.Column(db.String(255))
+    Value = db.Column(db.Float)
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -98,17 +96,8 @@ def add_dataframe_to_db(df, model):
             db.session.rollback()  # Rollback the session in case of error
             return False
 
-# Example usage:
-# Assuming df is your pandas DataFrame
-df = pd.DataFrame({
-    'timestamp': [12345, 23456, 34567],
-    'total_supplied': [1000, 2000, 3000],
-    'total_borrowed': [500, 1000, 1500],
-    'market_name': ['Market1', 'Market2', 'Market3']
-})
-
 # Add the DataFrame to the HistoricalData table in the database
-success = add_dataframe_to_db(df, HistoricalData)
+success = add_dataframe_to_db(historic_data, HistoricalData)
 if success:
     print("DataFrame added to database successfully.")
 else:
