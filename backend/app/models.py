@@ -1,3 +1,5 @@
+#from app import db
+
 import pandas as pd
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -13,7 +15,7 @@ class AllMarkets(db.Model):
 
 class HistoricalData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    Timestamp = db.Column(db.Float)
+    Timestamp = db.Column(db.Integer)
     Market = db.Column(db.String(255))
     Data_Type = db.Column(db.String(255))
     Value = db.Column(db.Float)
@@ -102,3 +104,4 @@ if success:
     print("DataFrame added to database successfully.")
 else:
     print("Error adding DataFrame to database.")
+

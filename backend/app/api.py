@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
+from models import *
 
 api = Blueprint('api', __name__)
 
@@ -17,23 +18,13 @@ def historical_leverage():
     leverage_data = {"timestamp": "2023-01-01", "leverage": 2.5, "market": market, "timeframe": timeframe}
     return jsonify(leverage_data)
 
-@api.route('/historical_supply', methods=['GET'])
-def historical_supply():
-    market = request.args.get('market', 'mainnet aave v3')
-    timeframe = request.args.get('timeframe', '1 year')
-    token = request.args.get('token', 'rETH')
-    # Adjust your data fetching logic based on market, timeframe, and token
-    supply_data = {"timestamp": "2023-01-01", "supply_amount": 1000, "market": market, "timeframe": timeframe, "token": token}
-    return jsonify(supply_data)
-
-@api.route('/historical_borrow', methods=['GET'])
-def historical_borrow():
-    market = request.args.get('market', 'mainnet aave v3')
-    timeframe = request.args.get('timeframe', '1 year')
-    token = request.args.get('token', 'rETH')
-    # Adjust your data fetching logic based on market, timeframe, and token
-    borrow_data = {"timestamp": "2023-01-01", "borrow_amount": 500, "market": market, "timeframe": timeframe, "token": token}
-    return jsonify(borrow_data)
+@api.route('/historical_data', methods=['GET'])
+def historical_data():
+    market = request.args.get('market', 'AAVE')
+    timeframe = request.args.get('timeframe', 365) # To be handled in HistoricalData query
+    market_data = HistoricalData.query.filter_by(Market=market).all()
+    data_list = [data.to_dict() for data in market_data]
+    return jsonify(data_list)
 
 @api.route('/supply_transactions', methods=['GET'])
 def supply_transactions():
