@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 const NavBar = () => (
     <nav>
         <div className="marginals">
-            <div className="VTEE">RocketInsight</div>
+            <div className="VTEE">
+                <Link to="/" className="nav-link">RocketInsight</Link>
+            </div>
             <ul>
                 <li><Link to="/markets" className="nav-link">Markets</Link></li>
                 <li><Link to="/wallets" className="nav-link">Wallets</Link></li>
