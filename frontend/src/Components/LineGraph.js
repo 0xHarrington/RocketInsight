@@ -1,13 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import axios from 'axios';
 
-const LineGraph = () => {
+const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
   const [data, setData] = useState([]);
   const svgRef = useRef();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(market, timeframe);
+  }, [market, timeframe]);
+
+  const fetchData = (market, timeframe) => {
+    axios.get(`/historical_data?market=${market}&timeframe=${timeframe}`)
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
 
   useEffect(() => {
     if (data.length === 0) return;
@@ -30,6 +41,9 @@ const LineGraph = () => {
       .x(d => xScale(d.x))
       .y(d => yScale(d.y));
 
+    // Clear previous contents
+    svg.selectAll("*").remove();
+
     // Draw line
     svg.append('path')
       .datum(data)
@@ -39,23 +53,14 @@ const LineGraph = () => {
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 2);
 
-    // Draw x axis
+    // Draw x and y axes
     svg.append('g')
       .attr('transform', `translate(0,${height})`)
       .call(d3.axisBottom(xScale));
 
-    // Draw y axis
     svg.append('g')
       .call(d3.axisLeft(yScale));
   }, [data]);
-
-  const fetchData = () => {
-    d3.json('data.json').then(data => {
-      setData(data);
-    }).catch(error => {
-      console.error('Error fetching data:', error);
-    });
-  };
 
   return (
     <div>
