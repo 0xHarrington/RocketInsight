@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LineGraph from './LineGraph.js';
+import LineGraph from './graph.js';
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
 import './style.css'
@@ -10,7 +10,6 @@ function Pages() {
   const handlepage = (e) => {
     setShowpage(e);
   }
-
   return (
     <div id="page-formatting">
       <nav>
@@ -33,6 +32,7 @@ function Pages() {
 
       <React.Fragment>
         <Container>
+
           <div className="page">
 
             <div className={showpage === 1 ? "landing fade show active" : "landing fade"}>
@@ -43,7 +43,7 @@ function Pages() {
                   <h3 align="center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
                 </div>
                 <br />
-                <LineGraph market="AAVE" timeframe={365} />
+                <LineGraph />
                 <br />
                 <h2 align="center">Protocols with rEth Assets</h2>
                 <br />
@@ -140,39 +140,6 @@ function Pages() {
                     </td>
                   </tr>
                 </table>
-              </main>
-            </div>
-
-            <div className={showpage === 2 ? "wallet fade show active" : "wallet fade"}>
-              <main id="c-products">
-                <br />
-                <br />
-                <h1>Wallet address clustering</h1>
-                <br />
-                <br />
-                <aside id="c-options">
-                  <br />
-                  <form class="select-category">
-                    <input type="checkbox" id="cat1" name="cat1" value="C1" />
-                    <label for="cat1"> Show all transactions</label><br />
-                    <input type="checkbox" id="cat2" name="cat2" value="C2" />
-                    <label for="cat2"> Visualization Option 1</label><br />
-                    <input type="checkbox" id="cat3" name="cat3" value="C3" />
-                    <label for="cat3"> Visualization Option 2</label><br />
-                  </form>
-                </aside>
-                <div id="search">
-                  <h2>Enter Wallet Address:</h2>
-                  <form action="#" method="GET">
-                    <input type="text" id="lookup" name="search" placeholder="0x52cF14DEc4b7B18454e6e5D543551d7A55F15805" />
-                    < input type="submit" value="Go" />
-                  </form>
-                </div>
-                <div id="cluster">
-                  <h2>Cluster:</h2>
-                  <br />
-                  <img src="cluster.png" alt="Cluster" />
-                </div>
               </main>
             </div>
 
@@ -363,6 +330,38 @@ function Pages() {
               </main>
             </div>
 
+            <div className={showpage === 2 ? "wallet fade show active" : "wallet fade"}>
+              <main id="c-products">
+                <br />
+                <br />
+                <h1>Wallet address clustering</h1>
+                <br />
+                <br />
+                <aside id="c-options">
+                  <br />
+                  <form class="select-category">
+                    <input type="checkbox" id="cat1" name="cat1" value="C1" />
+                    <label for="cat1"> Show all transactions</label><br />
+                    <input type="checkbox" id="cat2" name="cat2" value="C2" />
+                    <label for="cat2"> Visualization Option 1</label><br />
+                    <input type="checkbox" id="cat3" name="cat3" value="C3" />
+                    <label for="cat3"> Visualization Option 2</label><br />
+                  </form>
+                </aside>
+                <div id="search">
+                  <h2>Enter Wallet Address:</h2>
+                  <form action="#" method="GET">
+                    <input type="text" id="lookup" name="search" placeholder="0x52cF14DEc4b7B18454e6e5D543551d7A55F15805" />
+                    < input type="submit" value="Go" />
+                  </form>
+                </div>
+                <div id="cluster">
+                  <h2>Cluster:</h2>
+                  <br />
+                  <img src="cluster.png" alt="Cluster" />
+                </div>
+              </main>
+            </div>
           </div>
         </Container>
 
