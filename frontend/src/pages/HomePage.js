@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import LineGraph from '../Components/LineGraph';
 import MarketTable from '../Components/MarketTable';
-import './style.css'; // Assuming style.css is moved to assets/styles
+// import '../styles/App.css';
 
 const HomePage = () => {
-    const [showpage, setShowpage] = useState(1);
-
-    const handlepage = (e) => setShowpage(e);
-
     return (
         <div id="page-formatting">
             <Container>
@@ -19,7 +15,8 @@ const HomePage = () => {
                     </div>
                     <LineGraph market="AAVE" timeframe={365} />
                     <h2 align="center">Protocols with rEth Assets</h2>
-                    <MarketTable showpage={showpage} handlepage={handlepage} />
+                    {/* <MarketTable showpage={showpage} handlepage={handlepage} /> */}
+                    <MarketTable />
                 </div>
             </Container>
         </div>
