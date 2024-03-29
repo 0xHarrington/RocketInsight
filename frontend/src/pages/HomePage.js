@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import LineGraph from '../Components/LineGraph';
-import NavBar from '../components/Navigation/NavBar';
 import MarketTable from '../Components/MarketTable';
 import './style.css'; // Assuming style.css is moved to assets/styles
 
@@ -12,7 +11,6 @@ const HomePage = () => {
 
     return (
         <div id="page-formatting">
-            <NavBar showpage={showpage} handlepage={handlepage} />
             <Container>
                 <div className="page">
                     <h1>Welcome to RocketInsight</h1>
