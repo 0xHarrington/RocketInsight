@@ -1,5 +1,5 @@
 import React from 'react';
-import WalletDetails from '../WalletDetails';
+import WalletDetails from '../Components/WalletDetails';
 
 const WalletPage = () => (
     <div>
