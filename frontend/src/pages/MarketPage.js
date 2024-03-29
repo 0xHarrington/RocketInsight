@@ -1,5 +1,5 @@
 import React from 'react';
-import LineGraph from '../components/Graph/LineGraph';
+import LineGraph from '../Components/LineGraph';
 
 const MarketPage = () => (
     <div>
