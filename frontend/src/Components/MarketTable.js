@@ -47,9 +47,6 @@ const MarketTable = () => (
         </tr>
         <tr>
             <td>
-                <img src="logo2.png" />
-            </td>
-            <td>
                 <a href="https://app.compound.finance/markets/weth-mainnet">Compound</a>
             </td>
             <td>
@@ -66,9 +63,6 @@ const MarketTable = () => (
             </td>
         </tr>
         <tr>
-            <td>
-                <img src="logo3.png" />
-            </td>
             <td>
                 <a href="https://app.uniswap.org/explore/tokens/ethereum/0xae78736cd615f374d3085123a210448e74fc6393">Uniswap</a>
             </td>
