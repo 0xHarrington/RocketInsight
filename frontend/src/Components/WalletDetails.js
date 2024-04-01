@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 
-const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
+const WalletDetails = ({ market = 'AAVE', timeframe = 365 }) => {
     const [data, setData] = useState([]);
     const svgRef = useRef();
 
@@ -64,10 +64,10 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
 
     return (
         <div>
-            <h2>Line Graph</h2>
+            <h2>Wallet Clustering Visualization</h2>
             <svg ref={svgRef} width={600} height={400}></svg>
         </div>
     );
 };
 
-export default LineGraph;
+export default WalletDetails;
