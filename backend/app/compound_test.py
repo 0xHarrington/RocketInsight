@@ -15,8 +15,8 @@ token_address_map = {
 
 # Map market name to "Pool" contract address and abi filepath
 contract_address_abi_map = {
-    'AAVE': ('0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3', './AAVE_PoolDataProvider_ABI.json'),
-    'COMPOUND': ('0xA17581A9E3356d9A858b789D68B4d866e593aE94', './Compound_ABI.json')
+    'AAVE': ('0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3', 'app/AAVE_PoolDataProvider_ABI.json'),
+    'COMPOUND': ('0xA17581A9E3356d9A858b789D68B4d866e593aE94', 'app/Compound_ABI.json')
     # fill with rest
 }
 
