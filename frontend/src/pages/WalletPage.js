@@ -1,12 +1,15 @@
 import React from 'react';
-import WalletDetails from '../Components/WalletDetails';
+import WalletClustering from '../Components/WalletClustering';
 import WalletTable from '../Components/WalletTable';
+import { Container } from 'react-bootstrap';
 
 const WalletPage = () => (
     <div>
-        <h1>Wallet address clustering</h1>
-        <WalletDetails />
-        <WalletTable />
+        <Container>
+            <h1>Wallet address clustering</h1>
+            <WalletClustering />
+            <WalletTable />
+        </Container>
     </div>
 );
 

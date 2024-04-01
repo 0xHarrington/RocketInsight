@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 
-const WalletDetails = ({ market = 'AAVE', timeframe = 365 }) => {
+const WalletClustering = ({ market = 'AAVE', timeframe = 365 }) => {
     const [data, setData] = useState([]);
     const svgRef = useRef();
 
@@ -70,4 +70,4 @@ const WalletDetails = ({ market = 'AAVE', timeframe = 365 }) => {
     );
 };
 
-export default WalletDetails;
+export default WalletClustering;
