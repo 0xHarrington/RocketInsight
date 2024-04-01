@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-from models import *
+from app.models import *
+from pprint import pprint
 
 api = Blueprint('api', __name__)
 
@@ -24,6 +25,7 @@ def historical_data():
     timeframe = request.args.get('timeframe', 365) # To be handled in HistoricalData query
     market_data = HistoricalData.query.filter_by(Market=market).all()
     data_list = [data.to_dict() for data in market_data]
+    pprint(data_list)
     return jsonify(data_list)
 
 @api.route('/supply_transactions', methods=['GET'])
