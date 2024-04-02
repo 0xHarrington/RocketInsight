@@ -8,20 +8,22 @@ from datetime import datetime, timedelta, timezone
 import time
 
 # Map token names to contract addresses
-token_address_map = {
+TOKEN_ADDRESS_MAP = {
     'rETH': '0xae78736Cd615f374D3085123A210448E74Fc6393'
     # fill with rest
 }
 
 # Map market name to "Pool" contract address and abi filepath
-contract_address_abi_map = {
+CONTRACT_ABI_MAP = {
     'AAVE': ('0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3', 'app/AAVE_PoolDataProvider_ABI.json'),
     'COMPOUND': ('0xA17581A9E3356d9A858b789D68B4d866e593aE94', 'app/Compound_ABI.json')
     # fill with rest
 }
 
-# Connect to ETH blockchain with infura API key
-w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/5f0c4998d7544ee1bb3f0dc297a6821c'))
+def get_web3_connection():
+    # Connect to ETH blockchain with infura API key
+    w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/5f0c4998d7544ee1bb3f0dc297a6821c'))
+    return w3
 
 # Align to nearest previous interval
 def align_to_interval(dt, interval_hours):
@@ -30,6 +32,7 @@ def align_to_interval(dt, interval_hours):
 
 # Find block number closest to timestamp with binary search
 def get_block_number_by_timestamp(target_timestamp):
+    w3 = get_web3_connection()
     low, high = 0, w3.eth.block_number
     while low < high:
         mid = (low + high) // 2
@@ -135,16 +138,17 @@ def historical_borrow_and_supply(market, timeframe = 365, interval = 6, token = 
     
     """
     # Make sure the requested market is supported
-    if market in contract_address_abi_map.keys():
+    if market in CONTRACT_ABI_MAP.keys():
         # Lookup token address, contract address, and abi filepath
-        token_address = token_address_map[token]
-        contract_address, abi_filepath = contract_address_abi_map[market]
+        token_address = TOKEN_ADDRESS_MAP[token]
+        contract_address, abi_filepath = CONTRACT_ABI_MAP[market]
 
 
         # Web3 setup
         with open(abi_filepath) as f:
             abi = json.load(f)
 
+        w3 = get_web3_connection()
         smart_contract = w3.eth.contract(address=contract_address, abi=abi)
 
         # Get blocks for specified timeframe and interval
@@ -216,8 +220,6 @@ def historical_borrow_and_supply(market, timeframe = 365, interval = 6, token = 
         print("UNSUPPORTED MARKET ENTERED")
         return []
     
-global_all_markets = ['AAVE', 'COMPOUND']
-
 def scrape_historic_all(timeframe = 365):
     """
     Organizes historical data for specified timeframe for all markets into a single DataFrame.
@@ -231,6 +233,8 @@ def scrape_historic_all(timeframe = 365):
         - 'Value': Numeric value of the data fetched.
     """
     full_df = None
+    global_all_markets = ['AAVE', 'COMPOUND']
+
     
     for market in global_all_markets:
         # Get market's historic data
@@ -253,6 +257,3 @@ def scrape_historic_all(timeframe = 365):
     full_df['Timestamp'] = full_df['Timestamp'].astype('int64')
     
     return full_df
-
-historic_data = scrape_historic_all(timeframe = 365)
-print(historic_data.head())
