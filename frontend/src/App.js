@@ -1,24 +1,12 @@
+import logo from './logo.svg';
+import './App.css';
+import Pages from './Components/Pages';
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MarketPage from './pages/MarketPage';
-import WalletPage from './pages/WalletPage';
-import HomePage from './pages/HomePage';
-import NavBar from './Components/NavBar';
-import './styles/App.css';
 
 function App() {
   return (
-    <Router>
-      <div>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/markets" element={<MarketPage />} />
-          <Route path="/wallets" element={<WalletPage />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+    <Pages />
+   );
 }
 
 export default App;
