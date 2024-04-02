@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LineGraph from './graph.js';
+import NetworkGraph from './network.js';
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
 import './style.css'
@@ -357,8 +358,9 @@ function Pages() {
                 </div>
                 <div id="cluster">
                   <h2>Cluster:</h2>
+                  <NetworkGraph />
                   <br />
-                  <img src="cluster.png" alt="Cluster" />
+                  
                 </div>
               </main>
             </div>
