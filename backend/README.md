@@ -94,6 +94,10 @@ Install the necessary libraries using pip:
 pip install -r requirements.txt
 ```
 
+## Database Setup
+
+The models.py script contains the database table initializations. It also includes a function to convert a Python Pandas dataframe into a database table to be added to the local database. It uses a helper function to create tables based on the SQLAlchemy models. The add_dataframe_to_db function adds a pandas DataFrame to the corresponding SQLAlchemy model table in the database. The appropriate message is printed out in the console depending on whether the addition to the database was successful. If the addition was successful, the DB Browser for SQLite desktop software can be used to visualize each of the tables in the database.
+
 ## Contribution
 
 We welcome contributions from the community to improve and extend the functionality of the RocketInsight backend service. Please adhere to our contribution guidelines outlined in CONTRIBUTING.md.
