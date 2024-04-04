@@ -1,9 +1,12 @@
 #from app import db
 
 import pandas as pd
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from compound_test import historic_data
+from aave_transactions import recent_supply
+from new_user_history import final_df
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -11,59 +14,47 @@ db = SQLAlchemy(app)
 
 class AllMarkets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    market = db.Column(db.String(255))
+    market = db.Column(db.String(255), nullable=True)
 
 class HistoricalData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    Timestamp = db.Column(db.Integer)
-    Market = db.Column(db.String(255))
-    Data_Type = db.Column(db.String(255))
-    Value = db.Column(db.Float)
+    Timestamp = db.Column(db.Integer, nullable=True)
+    Market = db.Column(db.String(255), nullable=True)
+    Data_Type = db.Column(db.String(255), nullable=True)
+    Value = db.Column(db.Float, nullable=True)
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    reserve = db.Column(db.String(255))
-    user = db.Column(db.String(255))
-    amount = db.Column(db.Integer)
-    timestamp = db.Column(db.Integer)
-    log_index = db.Column(db.Integer)
-    transaction_index = db.Column(db.Integer)
-    transaction_hash = db.Column(db.String(255))
-    block_hash = db.Column(db.String(255))
-    block_number = db.Column(db.Integer)
-    event_type = db.Column(db.String(255))
-
-class UserHistory(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.String(255))
-    reserve = db.Column(db.String(255))
-    timestamp = db.Column(db.Integer)
-    block_number = db.Column(db.Integer)
-    block_hash = db.Column(db.String(255))
-    transaction_hash = db.Column(db.String(255))
-    amount = db.Column(db.Integer)
-    event_type = db.Column(db.String(255))
+    reserve = db.Column(db.String(255), nullable=True)
+    user = db.Column(db.String(255), nullable=True)
+    amount = db.Column(db.Integer, nullable=True)
+    timestamp = db.Column(db.Integer, nullable=True)
+    log_index = db.Column(db.Integer, nullable=True)
+    transaction_index = db.Column(db.Integer, nullable=True)
+    transaction_hash = db.Column(db.String(255), nullable=True)
+    block_hash = db.Column(db.String(255), nullable=True)
+    block_number = db.Column(db.Integer, nullable=True)
 
 class NewUserHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    event_type = db.Column(db.String(255))
-    transaction_hash = db.Column(db.String(255))
-    address = db.Column(db.String(255))
-    block_hash = db.Column(db.String(255))
-    block_number = db.Column(db.Integer)
-    reserve = db.Column(db.String(255))
-    on_behalf_of = db.Column(db.String(255))
-    user = db.Column(db.String(255))
-    amount = db.Column(db.Integer)
-    borrow_rate = db.Column(db.Integer)
-    repayer = db.Column(db.String(255))
-    use_atokens = db.Column(db.Boolean)
-    to = db.Column(db.String(255))
-    target = db.Column(db.String(255))
-    asset = db.Column(db.String(255))
-    referral_code = db.Column(db.Integer)
-    initiator = db.Column(db.String(255))
-    premium = db.Column(db.Float)
+    event_type = db.Column(db.String(255), nullable=True)
+    transaction_hash = db.Column(db.String(255), nullable=True)
+    address = db.Column(db.String(255), nullable=True)
+    block_hash = db.Column(db.String(255), nullable=True)
+    block_number = db.Column(db.Integer, nullable=True)
+    reserve = db.Column(db.String(255), nullable=True)
+    on_behalf_of = db.Column(db.String(255), nullable=True)
+    user = db.Column(db.String(255), nullable=True)
+    amount = db.Column(db.Integer, nullable=True)
+    borrow_rate = db.Column(db.Float, nullable=True)
+    repayer = db.Column(db.String(255), nullable=True)
+    use_atokens = db.Column(db.Boolean, nullable=True)
+    to = db.Column(db.String(255), nullable=True)
+    target = db.Column(db.String(255), nullable=True)
+    asset = db.Column(db.String(255), nullable=True)
+    referral_code = db.Column(db.Integer, nullable=True)
+    initiator = db.Column(db.String(255), nullable=True)
+    premium = db.Column(db.Float, nullable=True)
     
 def create_tables():
     """
@@ -86,6 +77,8 @@ def add_dataframe_to_db(df, model):
     with app.app_context():
         try:
             create_tables()
+            # Replace NaN values with None
+            df = df.where(pd.notnull(df), None)
             # Iterate over DataFrame rows and add them to the database session
             for _, row in df.iterrows():
                 record = model(**row.to_dict())  # Create a new record from DataFrame row
@@ -99,7 +92,7 @@ def add_dataframe_to_db(df, model):
             return False
 
 # Add the DataFrame to the HistoricalData table in the database
-success = add_dataframe_to_db(historic_data, HistoricalData)
+success = add_dataframe_to_db(final_df.head(1), NewUserHistory)
 if success:
     print("DataFrame added to database successfully.")
 else:
