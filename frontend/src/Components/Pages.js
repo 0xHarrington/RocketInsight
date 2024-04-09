@@ -4,6 +4,7 @@ import NetworkGraph from './network.js';
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
 import './style.css'
+import Barchart from './graph.js';
 
 function Pages() {
   const [showpage, setShowpage] = useState(1);
@@ -44,7 +45,7 @@ function Pages() {
                   <h3 align="center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
                 </div>
                 <br />
-                <LineGraph />
+                <Barchart />
                 <br />
                 <h2 align="center">Protocols with rEth Assets</h2>
                 <br />
