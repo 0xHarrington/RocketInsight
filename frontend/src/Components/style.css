@@ -72,7 +72,6 @@
   .page { /*Affects all content between header and footer*/
     width: 100%; 
     padding-bottom: 4.5rem; /*Ensuring footer does not overlap with body text*/
-    color: white;
     display : grid;
     grid-template: 1fr / 1fr;
   }
