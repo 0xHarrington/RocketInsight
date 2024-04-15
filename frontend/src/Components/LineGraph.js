@@ -11,9 +11,10 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
   }, [market, timeframe]);
 
   const fetchData = (market, timeframe) => {
-    axios.get(`/historical_data?market=${market}&timeframe=${timeframe}`)
+    axios.get(`http://localhost:5000/api/historical_data?market=${market}&timeframe=${timeframe}`)
       .then(response => {
-        const transformedData = response.data.map(d => ({ x: d.someXvalue, y: d.someYvalue })); // Adapt these keys to your actual data structure
+        console.log('Raw data:', response.data); // Debugging output
+        const transformedData = response.data.map(d => ({ x: d.Timestamp, y: d.Value }));
         console.log('Fetched data:', transformedData); // Debugging output
         setData(transformedData);
       })
@@ -23,7 +24,7 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
   };
 
   useEffect(() => {
-    if (data.length === 0) return;
+    if (data.length === 0 || data.some(d => d.x === undefined || d.y === undefined)) return;
 
     const svg = d3.select(svgRef.current);
     const width = +svg.attr('width');
