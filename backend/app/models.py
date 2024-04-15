@@ -12,6 +12,12 @@ class AllMarkets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     market = db.Column(db.String(255))
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "market": self.market,
+        }
+
 
 class HistoricalData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,6 +25,15 @@ class HistoricalData(db.Model):
     Market = db.Column(db.String(255))
     Data_Type = db.Column(db.String(255))
     Value = db.Column(db.Float)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "Timestamp": self.Timestamp,
+            "Market": self.Market,
+            "Data_Type": self.Data_Type,
+            "Value": self.Value,
+        }
 
 
 class Transaction(db.Model):
@@ -34,6 +49,21 @@ class Transaction(db.Model):
     block_number = db.Column(db.Integer)
     event_type = db.Column(db.String(255))
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "reserve": self.reserve,
+            "user": self.user,
+            "amount": self.amount,
+            "timestamp": self.timestamp,
+            "log_index": self.log_index,
+            "transaction_index": self.transaction_index,
+            "transaction_hash": self.transaction_hash,
+            "block_hash": self.block_hash,
+            "block_number": self.block_number,
+            "event_type": self.event_type,
+        }
+
 
 class UserHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +75,19 @@ class UserHistory(db.Model):
     transaction_hash = db.Column(db.String(255))
     amount = db.Column(db.Integer)
     event_type = db.Column(db.String(255))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user": self.user,
+            "reserve": self.reserve,
+            "timestamp": self.timestamp,
+            "block_number": self.block_number,
+            "block_hash": self.block_hash,
+            "transaction_hash": self.transaction_hash,
+            "amount": self.amount,
+            "event_type": self.event_type,
+        }
 
 
 class NewUserHistory(db.Model):
@@ -67,3 +110,26 @@ class NewUserHistory(db.Model):
     referral_code = db.Column(db.Integer)
     initiator = db.Column(db.String(255))
     premium = db.Column(db.Float)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "event_type": self.event_type,
+            "transaction_hash": self.transaction_hash,
+            "address": self.address,
+            "block_hash": self.block_hash,
+            "block_number": self.block_number,
+            "reserve": self.reserve,
+            "on_behalf_of": self.on_behalf_of,
+            "user": self.user,
+            "amount": self.amount,
+            "borrow_rate": self.borrow_rate,
+            "repayer": self.repayer,
+            "use_atokens": self.use_atokens,
+            "to": self.to,
+            "target": self.target,
+            "asset": self.asset,
+            "referral_code": self.referral_code,
+            "initiator": self.initiator,
+            "premium": self.premium,
+        }
