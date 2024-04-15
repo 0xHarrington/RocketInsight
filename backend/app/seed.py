@@ -1,5 +1,4 @@
 from app.models import db, HistoricalData
-from app.database import create_app
 import pandas as pd
 
 

@@ -1,11 +1,25 @@
-from app.database import create_app, create_tables
+from flask import Flask
+from flask_cors import CORS
+from app.models import db
+from app.api import api
 from app.seed import (
     add_dataframe_to_db,
     pd,
 )  # Assuming add_dataframe_to_db is correctly adjusted for this context
 from app.data_utils import scrape_historic_all  # Import the function that fetches data
 
-app = create_app()
+
+def create_app():
+    app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+    db.init_app(app)
+    app.register_blueprint(api, url_prefix="/api")
+    return app
+
+
+def create_tables(app):
+    with app.app_context():
+        db.create_all()
 
 
 def initialize_app():
@@ -25,6 +39,10 @@ def initialize_app():
             print("Database seeded with historical data.")
         else:
             print("Error seeding database.")
+
+
+app = create_app()
+CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
 
 
 if __name__ == "__main__":
