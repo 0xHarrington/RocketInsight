@@ -13,7 +13,9 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
   const fetchData = (market, timeframe) => {
     axios.get(`/historical_data?market=${market}&timeframe=${timeframe}`)
       .then(response => {
-        setData(response.data);
+        const transformedData = response.data.map(d => ({ x: d.someXvalue, y: d.someYvalue })); // Adapt these keys to your actual data structure
+        console.log('Fetched data:', transformedData); // Debugging output
+        setData(transformedData);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
