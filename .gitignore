@@ -1,3 +1,6 @@
+### remote instance private key ###
+*.pem
+
 ### Working on a mac
 .DS_Store
 
