@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MarketPage from './pages/MarketPage';
 import WalletPage from './pages/WalletPage';
 import HomePage from './pages/HomePage';
-import NavBar from './Components/NavBar';
+import Navi from './Components/NavBar';
 import './styles/App.css';
 
 function App() {
   return (
     <Router>
       <div>
-        <NavBar />
+        <Navi />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/markets" element={<MarketPage />} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NavBar = () => (
+const Navi = () => (
     <nav>
         <div className="marginals">
             <div className="VTEE">
@@ -21,4 +21,4 @@ const NavBar = () => (
     </nav>
 );
 
-export default NavBar;
+export default Navi;

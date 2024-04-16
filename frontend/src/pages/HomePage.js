@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import LineGraph from '../Components/LineGraph';
 import MarketTable from '../Components/MarketTable';
-// import '../styles/App.css';
+import '../styles/style.css';
 
 const HomePage = () => {
     return (
@@ -16,6 +16,7 @@ const HomePage = () => {
                     <LineGraph market="AAVE" timeframe={365} />
                     <h2 align="center">Protocols with rEth Assets</h2>
                     {/* <MarketTable showpage={showpage} handlepage={handlepage} /> */}
+                    <br />
                     <MarketTable />
                 </div>
             </Container>
