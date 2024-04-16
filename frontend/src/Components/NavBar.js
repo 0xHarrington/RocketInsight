@@ -7,10 +7,12 @@ const Navi = () => (
             <div className="VTEE">
                 <Link to="/" className="nav-link">RocketInsight</Link>
             </div>
+            <div className="VTEE">
             <ul>
                 <li><Link to="/markets" className="nav-link">Markets</Link></li>
                 <li><Link to="/wallets" className="nav-link">Wallets</Link></li>
             </ul>
+            </div>
             <div className="alternative">
                 <ul>
                     <li><a href="#">FAQ</a></li>
