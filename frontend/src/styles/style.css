@@ -77,6 +77,22 @@
     display : grid;
   }
 
+  .viz {
+    margin-left:auto;
+    margin-right:auto;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .viz h2 {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
   
   .thead {
     color: gold !important;
