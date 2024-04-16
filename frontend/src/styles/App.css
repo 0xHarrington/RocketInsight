@@ -10,7 +10,7 @@
   src: local('Roboto'), url(./fonts/RobotoFlex-Regular.ttf) format('truetype');
 }
 
-html,body { 
+html { 
   height:110%; /*Accomodates footer*/
   background-color: #282828; 
 } /*Done to ensure background color covers entire page*/
@@ -250,10 +250,6 @@ table, td { /*Table displaying list of items*/
   padding-bottom:10px;
   text-align: center;
   font-size: 1.1rem;
-}
-
-table, th, td {
-  border: 1px solid;  
 }
 
 td { /*Adjust width for mobile view*/

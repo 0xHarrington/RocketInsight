@@ -5,7 +5,7 @@
     box-sizing: border-box;
   }
   
-  html,body { 
+  #page { 
     height:110%; /*Accomodates footer*/
     background-color: #282828; 
   } /*Done to ensure background color covers entire page*/
@@ -18,7 +18,7 @@
     font-size: xx-large;
     text-align:center;
     font-weight: 900;  
-    color: #8dda24;
+    color: #FF7518;
     margin-top:10px;
     margin-bottom: 10px;
     }
@@ -38,7 +38,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 50px;
-    color:#8dda24;
+    color:#FF7518;
   }
   
   .marginals ul li {/*Removing bullet points and keeping list at center of header */
@@ -50,7 +50,7 @@
   }
   
   .here { /*Indicate current page*/
-    color:#8dda24!important;
+    color:#FF7518 !important;
   }
   
   .login { /*Logged in user*/
@@ -71,28 +71,12 @@
   
   .page { /*Affects all content between header and footer*/
     width: 100%; 
+    padding-top:2.5rem; /*Ensuring header does not overlap with body text*/
     padding-bottom: 4.5rem; /*Ensuring footer does not overlap with body text*/
     color: white;
     display : grid;
-    grid-template: 1fr / 1fr;
   }
 
-  .page > * {
-    grid-column: 1 / 1;
-    grid-row: 1 / 1;
-  }
-
-  .page .landing {
-    z-index:2;
-  }
-
-  .page .market {
-    z-index:0;
-  }
-
-  .page .wallets {
-    z-index:3;
-  }
   
   .thead {
     color: gold !important;
@@ -112,9 +96,9 @@
     color: green !important;
   }
   
-  .page h1 { /*Main page heading*/
+  #page h1 { /*Main page heading*/
     text-align: center;
-    color:#8dda24;
+    color:#FF7518;
     margin-left: auto;
     margin-right: auto;
   }
@@ -251,31 +235,16 @@
     color: #00A86B;
   }
   
-  main table { /*Align table to center of page*/
-    margin-left: auto;
-    margin-right: auto;
-    align-items: center;
-    text-align: center;
-    clear: left;
-  }
-  
   table, td { /*Table displaying list of items*/
-    border-collapse:collapse;
-    padding-bottom:10px;
-    text-align: center;
+    padding: 20px;
   }
-  
-  table, th, td {
-    border: 1px solid;  
-  }
-  
-  td { /*Adjust width for mobile view*/
-    max-width:105px;
-  }
-  
+
   td a { /*This also uses an <a> hyperlink, but we do not want a border*/
-    border: none !important;
-    margin-left:-12.5px;
+    margin-left:0;
+  }
+        
+  td img { /*Resize table image*/
+    max-width:100px;
   }
   
   .content label { /*Positioning and moving textarea label to top of input field */
@@ -303,8 +272,8 @@
   }
   
   .info h3 { /*Middle info column 'Asking price'*/
-    border: 3px solid #8dda24;
-    color:#8dda24;
+    border: 3px solid #FF7518;
+    color:#FF7518;
     text-align:center;
   }
   
@@ -468,7 +437,6 @@
         }
         
         #page-formatting { /*Affects all body content*/
-          position:relative;
           height:100%;
           background-color: #282828;
         }
@@ -480,11 +448,7 @@
         table, td { /*Table displaying list of items*/
           padding: 20px;
         }
-  
-        td { /*Fix width in desktop view*/
-          max-width:100%;
-        }
-  
+    
         td a { /*This also uses an <a> hyperlink, but we do not want a border*/
           margin-left:0;
         }
@@ -506,7 +470,7 @@
           margin-top: 150px;
           margin-left: 15%;
           width: 250px;
-          border: 1px solid #8dda24;
+          border: 1px solid #FF7518;
         }
   
         #restupper { /*Upper buttons excluding Buying/Selling*/
@@ -518,8 +482,8 @@
         }
   
         #restupper a:hover { /*Hover indication for aesthetic purposes*/
-          border-color: #8dda24;
-          color: #8dda24;
+          border-color: #FF7518;
+          color: #FF7518;
         }
   
         #c-options { /*Allow user to filter by category*/
@@ -647,13 +611,13 @@
         }
         
         #buttons a:hover{/*Hover indication for aesthetic purposes*/
-          border-color: #8dda24;
-          color: #8dda24;
+          border-color: #FF7518;
+          color: #FF7518;
         }
   
         #buttons button:hover{/*Hover indication for aesthetic purposes*/
-          border-color: #8dda24;
-          color: #8dda24;
+          border-color: #FF7518;
+          color: #FF7518;
         }
   
         .wishlist-edit{ /*Display only on PC version*/
