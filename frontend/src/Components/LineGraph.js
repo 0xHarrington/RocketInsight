@@ -80,6 +80,7 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
         <h2>Line Graph</h2>
         <br />
         <svg ref={svgRef} width={600} height={400}></svg>
+        <br />
     </div>
   );
 };
