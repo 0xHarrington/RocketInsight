@@ -20,7 +20,7 @@ const NetworkGraph = () => {
 
   const renderGraph = data => {
     const width = 600;
-    const height = 800;
+    const height = 600;
 
     const svg = d3.select(svgRef.current)
       .attr('width', width)
@@ -73,9 +73,8 @@ const NetworkGraph = () => {
   };
 
   return (
-    <div>
+    <div class="viz">
       <br />
-      <h3>Network Graph</h3>
       <svg ref={svgRef}></svg>
     </div>
   );
