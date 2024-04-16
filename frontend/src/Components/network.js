@@ -10,7 +10,7 @@ const NetworkGraph = () => {
 
   const fetchGitHubData = async () => {
     try {
-      const response = await fetch('https://raw.githubusercontent.com/0xHarrington/RocketInsight/Visualization-testing/prototyping/network_graph_data.json');
+      const response = await fetch('https://raw.githubusercontent.com/0xHarrington/RocketInsight/Bootstrap_and_viz/prototyping/network_graph_data.json');
       const data = await response.json();
       renderGraph(data);
     } catch (error) {
