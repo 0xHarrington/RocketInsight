@@ -23,18 +23,6 @@ class HistoricalData(db.Model):
     Data_Type = db.Column(db.String(255), nullable=True)
     Value = db.Column(db.Float, nullable=True)
 
-class Transaction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    reserve = db.Column(db.String(255), nullable=True)
-    user = db.Column(db.String(255), nullable=True)
-    amount = db.Column(db.Integer, nullable=True)
-    timestamp = db.Column(db.Integer, nullable=True)
-    log_index = db.Column(db.Integer, nullable=True)
-    transaction_index = db.Column(db.Integer, nullable=True)
-    transaction_hash = db.Column(db.String(255), nullable=True)
-    block_hash = db.Column(db.String(255), nullable=True)
-    block_number = db.Column(db.Integer, nullable=True)
-
 class NewUserHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_type = db.Column(db.String(255), nullable=True)
@@ -92,9 +80,8 @@ def add_dataframe_to_db(df, model):
             return False
 
 # Add the DataFrame to the HistoricalData table in the database
-success = add_dataframe_to_db(final_df.head(1), NewUserHistory)
+success = add_dataframe_to_db(historic_data, HistoricalData)
 if success:
     print("DataFrame added to database successfully.")
 else:
     print("Error adding DataFrame to database.")
-
