@@ -1,5 +1,11 @@
 from app.models import db, HistoricalData
+from app.data_utils import scrape_historic_all
 import pandas as pd
+from flask import Flask
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+db.init_app(app)
 
 
 def create_tables():
