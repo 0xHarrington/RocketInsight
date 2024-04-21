@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from app.models import db, create_app
 from app.api import api
-from app.seed import (
+from seed import (
     add_dataframe_to_db,
     pd,
 )  # Assuming add_dataframe_to_db is correctly adjusted for this context
