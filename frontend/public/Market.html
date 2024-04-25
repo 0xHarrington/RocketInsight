@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Market Page</title> <!--Title of page-->
+    <link rel="stylesheet" href="responsive.css">
+    <style> /*Internal CSS for unique styles*/
+
+        #options { /*Mobile view of category filter*/
+          align-items: center;
+          position:sticky; /*We don't want it to move with the page in this view*/
+          margin-left:auto;
+          margin-right:auto;
+          width: 200px;
+          background: #ccc;
+          color: black;
+          padding: 15px;
+          margin-bottom:60px;
+          clear: both;
+          z-index: 0;
+        }
+
+        #graph {
+            margin-top: 250px;
+            margin-right: 15%;
+            text-align: right;
+            margin-bottom:60px;
+        }
+        
+        #graph img {
+            width:50%;
+        }
+  
+        #submit-button { /*Submit button at bottom of category filter*/
+          text-align: center;
+        }
+        
+        #products { /*Mobile view for list of products*/
+          width: 100%; 
+          margin-top: 150px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+  
+        #restupper { /*Mobile view for upper buttons excluding Buying/Selling*/
+          text-align: center;
+          margin-top: 60px;
+          margin-bottom: 20px;
+          margin-left: 30px;
+        }
+  
+        #search { /*Mobile view of search bar*/
+          text-align: center;
+          margin-top: 20px;
+        }
+  
+        .image-desc { /*Remove extra information under product images*/
+          display:none;
+        }
+  
+  
+        @media all and (min-width: 850px) { /*For desktop view*/
+            
+          #options { /*Allow user to filter by category*/
+              float: left;
+              margin-top: 150px;
+              margin-left: 15%;
+              width: 250px;
+              border: 1px solid #8dda24;
+            }
+  
+            #restupper { /*Upper buttons excluding Buying/Selling*/
+              margin-top: 40px;
+              margin-bottom: 50px;
+              text-align: right;
+              margin-right: 20%;
+              float: right;
+            }
+  
+            #restupper a:hover { /*Hover indication for aesthetic purposes*/
+              border-color: #8dda24;
+              color: #8dda24;
+            }
+  
+            #search { /*Desktop view of search bar*/
+              margin-top: 10px;
+              margin-bottom: 0px;
+              text-align: right;
+              margin-right: 10px;
+            }
+  
+            #products { /*List of products*/
+              clear:both;
+              background-color: #282828; 
+            }
+  
+            .image-desc { /*For this view, we should include the additional information under each image*/
+              display:block;
+            }
+            
+            section::after { /*Clear after*/
+              content: "";
+              display: table;
+              clear: both;
+            }
+        }
+      </style>
+  </head>
+  <body>
+    <div id = "page-formatting"> <!--Affects all body content-->
+      <nav>
+        <div class="marginals"> <!--Nav-->
+          <div class="VTEE">
+            RocketInsight
+          </div>
+          <ul> <!--Navigation menu-->
+            <li><a class = "here" href="Landing.html">Markets</a></li>
+            <li><a href="Wallet.html">Wallets</a></li>
+          </ul>
+          <div class = "login"> <!--Login button-->
+            <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class = "page"> <!--Affects all content between nav and footer-->
+
+        <div id ="firstupper"> <!--Buying and selling buttons resembling toggle switch-->
+            <img src = "aave.jpeg">
+            <br>
+            <br>
+            <a href="Landing.html">Back</a>
+        </div>
+
+        <div id ="restupper">  <!--Upper buttons excluding Buying/Selling-->
+          <table id = "m-info"> <!--Table displaying info-->
+            <tr>
+                <td>    
+                    Total Borrowed:
+                    <br>
+                    498.08/19200  
+                </td>
+                <td>
+                    Total Supplied:
+                    <br>
+                    47.68K/90K
+                </td>
+                <td>
+                    Utilization Rate:
+                    <br>
+                    1.04%
+                </td>
+            </tr>
+          </table>  
+        </div>
+
+        <aside id="options"> <!--Allow user to filter by category-->
+            <h4>Metrics</h4>
+            <br> 
+            <form class="select-category">
+              <input type="checkbox" id="cat1" name="cat1" value="C1">
+              <label for="cat1"> Net Price Deviation</label><br>
+              <input type="checkbox" id="cat2" name="cat2" value="C2">
+              <label for="cat2"> Median APY</label><br>
+              <input type="checkbox" id="cat3" name="cat3" value="C3">
+              <label for="cat3"> Historical Leverage</label><br>
+              <input type="checkbox" id="cat4" name="cat4" value="C4">
+              <label for="cat4"> Price</label><br>
+            </form>
+          </aside>
+          <aside id="graph"> <!--Displays graph-->
+            <img src = "download.png">
+          </aside>
+          <main id = "products">
+            <h1>Notable Activity</h1>
+            <br>
+            <br>
+            <table> <!--Table displaying details-->
+              <tr>
+                  <td>
+                    <div class = "thead">
+                      <div class = "firstc">    
+                      #
+                      </div>
+                    </div>  
+                  </td>
+                  <td>
+                    <div class = "thead">  
+                      Wallet Address
+                    </div> 
+                  </td>
+                  <td>
+                    <div class = "thead">   
+                      Amount Leveraged
+                    </div>  
+                  </td>
+                  <td>
+                  <div class = "thead">     
+                    Risk Factor
+                  </div>  
+                  </td>
+              </tr>
+              <tr>  
+                <td>
+                  <div class = "firstc">   
+                  1
+                  </div>
+                </td>
+                <td>
+                  0x52cF14DEc4b7B18454e6e5D543551d7A55F15805
+                </td>
+                <td>
+                  -
+                </td>
+                <td>   
+                  <div class = "positive">   
+                    3
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class = "firstc"> 
+                  2
+                  </div>
+                </td>
+                <td>
+                  0x52cF14DEc4b7B18454e6e5D543551d7A55F15805
+                </td>
+                <td>
+                  -
+                </td>
+                <td>
+                  <div class = "negative"> 
+                    9
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class = "firstc">
+                  3
+                  </div>
+                </td>
+                <td>
+                  0x52cF14DEc4b7B18454e6e5D543551d7A55F15805
+                </td> 
+                <td>
+                  -
+                </td>
+                <td>   
+                  <div class = "positive">
+                    3
+                  </div>
+                </td>  
+              </tr>
+              <tr>
+                <td>
+                  <div class = "firstc">   
+                  4
+                  </div>
+                </td>
+                <td>
+                  0x52cF14DEc4b7B18454e6e5D543551d7A55F15805
+                </td>
+                <td>
+                   -
+                </td>
+                <td>   
+                  <div class = "positive">  
+                    0
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class = "firstc"> 
+                  5
+                  </div>
+                </td>
+                <td>
+                  0x52cF14DEc4b7B18454e6e5D543551d7A55F15805
+                </td>
+                <td>
+                   -
+                </td>
+                <td>
+                  <div class = "positive">
+                    2
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class = "firstc">
+                  6
+                  </div>  
+                </td>
+                <td>
+                  0x52cF14DEc4b7B18454e6e5D543551d7A55F15805 
+                </td>
+                <td>
+                  -
+                </td> 
+                <td>   
+                  <div class = "negative">
+                    10 
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </main>
+      </div>
+    </div>
+  </body>
+</html>
+

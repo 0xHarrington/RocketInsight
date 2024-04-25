@@ -2,25 +2,53 @@ import pandas as pd
 import time
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
+from flask_sqlalchemy import SQLAlchemy 
 # Computes the start time
-start_time = time.time()
+start_time = time.time() 
+from app.api import api
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-db = SQLAlchemy(app)
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+# db = SQLAlchemy(app)
+db = SQLAlchemy()
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+    db.init_app(app)
+    app.register_blueprint(api, url_prefix="/api")
+    return app
+
 
 class AllMarkets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     market = db.Column(db.String(255), nullable=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "market": self.market,
+        }
+
+
 class HistoricalData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) 
     Timestamp = db.Column(db.Integer, nullable=True)
     Market = db.Column(db.String(255), nullable=True)
     Data_Type = db.Column(db.String(255), nullable=True)
     Value = db.Column(db.Float, nullable=True)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "Timestamp": self.Timestamp,
+            "Market": self.Market,
+            "Data_Type": self.Data_Type,
+            "Value": self.Value,
+        }
+
+
 
 class UserHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +71,18 @@ class UserHistory(db.Model):
     initiator = db.Column(db.String(255), nullable=True)
     premium = db.Column(db.Float, nullable=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user": self.user,
+            "reserve": self.reserve,
+            "timestamp": self.timestamp,
+            "block_number": self.block_number,
+            "block_hash": self.block_hash,
+            "transaction_hash": self.transaction_hash,
+            "amount": self.amount,
+            "event_type": self.event_type,
+        }
 def create_tables():
     """
     Create database tables based on SQLAlchemy models.

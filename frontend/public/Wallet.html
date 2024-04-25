@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wallet Page</title> <!--Title of page-->
+    <link rel="stylesheet" href="responsive.css">
+    <style> /*Internal CSS for unique styles*/
+
+      #options { /*Mobile view of category filter*/
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 300px;
+        color: white;
+        padding: 15px;
+        margin-top:10px;
+        z-index: 0;
+      }
+
+      .select-category { /*Category filter*/
+        text-align: center;
+      }
+      
+      #products { /*Mobile view for list of markets/info*/
+        width: 100%; 
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #search { /*Mobile view of search bar*/
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom:50px;
+      }
+
+      #cluster { /*Mobile view of search bar*/
+        text-align: center;
+        margin-bottom:50px;
+      }
+
+      #lookup {
+        width: 400px;
+      }
+
+      @media all and (min-width: 850px) { /*For desktop view*/
+          
+        #options { /*Allow user to filter by category*/
+            align-items: right; 
+            float: right;
+            margin-right: 15%;
+            margin-bottom:50px;
+            width: 250px;
+        }
+
+        .select-category { /*Category filter*/
+        text-align: left;
+        } 
+
+          #search { /*Desktop view of search bar*/
+            margin-top: 50px;
+            text-align: left;
+            margin-left: 15%;
+          }
+
+          #cluster { /*Desktop view of cluster*/
+            margin-top: 100px;
+            text-align: left;
+            margin-left: 35%;
+          }
+
+          #products { /*List of products*/
+            clear:both;
+            background-color: #282828; 
+          }
+
+      }
+    </style>
+  </head>
+  <body>
+    <div id = "page-formatting"> <!--Affects all body content-->
+      <nav>
+        <div class="marginals"> <!--Nav-->
+          <div class="VTEE">
+            RocketInsight
+          </div>
+          <ul> <!--Navigation menu-->
+            <li><a href="Landing.html">Markets</a></li>
+            <li><a class = "here" href="Wallet.html">Wallets</a></li>
+          </ul>
+          <div class = "login"> <!--Login button-->
+            <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class = "page"> <!--Affects all content between nav and footer-->   
+        <main id="products">
+          <h1>Wallet address clustering</h1>
+          <br>
+          <br>
+          <aside id="options"> <!--Allow user to filter by category-->
+            <br> 
+            <form class="select-category">
+              <input type="checkbox" id="cat1" name="cat1" value="C1">
+              <label for="cat1"> Show all transactions</label><br>
+              <input type="checkbox" id="cat2" name="cat2" value="C2">
+              <label for="cat2"> Visualization Option 1</label><br>
+              <input type="checkbox" id="cat3" name="cat3" value="C3">
+              <label for="cat3"> Visualization Option 2</label><br>
+            </form>
+          </aside>
+          <div id = "search">
+            <h2>Enter Wallet Address:</h2>
+            <form action="#" method="GET"> <!--Search bar-->
+              <input type="text" id="lookup" name="search" placeholder="0x52cF14DEc4b7B18454e6e5D543551d7A55F15805">
+              <input type="submit" value="Go"> <!--Sends info in url to SearchResults.html-->
+            </form>
+          </div>
+          <div id = "cluster">
+          <h2>Cluster:</h2>
+          <br>
+          <img src = "cluster.png" alt="Cluster">
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+

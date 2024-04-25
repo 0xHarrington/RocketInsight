@@ -1,19 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
-import MarketAnalysis from './components/MarketAnalysis';
-import UserInsights from './components/UserInsights';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MarketPage from './pages/MarketPage';
+import WalletPage from './pages/WalletPage';
+import HomePage from './pages/HomePage';
+import NavBar from './Components/NavBar';
+import './styles/App.css';
 
 function App() {
   return (
     <Router>
       <div>
-        {/* Navigation Links can be added here */}
-        <Switch>
-          <Route path="/" exact component={Dashboard} />
-          <Route path="/market-analysis" component={MarketAnalysis} />
-          <Route path="/user-insights" component={UserInsights} />
-        </Switch>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/markets" element={<MarketPage />} />
+          <Route path="/wallets" element={<WalletPage />} />
+        </Routes>
       </div>
     </Router>
   );

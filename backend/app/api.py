@@ -1,32 +1,48 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-from models import *
+from app.models import *
+from pprint import pprint
 
-api = Blueprint('api', __name__)
+api = Blueprint("api", __name__)
 
-@api.route('/all_markets', methods=['GET'])
+
+@api.route("/all_markets", methods=["GET"])
 def all_markets():
     # This endpoint might not need arguments based on the initial description
-    markets_data = {"market1": {"url": "https://market1.example.com"}, "market2": {"url": "https://market2.example.com"}}
+    markets_data = {
+        "market1": {"url": "https://market1.example.com"},
+        "market2": {"url": "https://market2.example.com"},
+    }
     return jsonify(markets_data)
 
-@api.route('/historical_leverage', methods=['GET'])
+
+@api.route("/historical_leverage", methods=["GET"])
 def historical_leverage():
-    market = request.args.get('market', 'mainnet aave v3')
-    timeframe = request.args.get('timeframe', '1 year')
+    market = request.args.get("market", "mainnet aave v3")
+    timeframe = request.args.get("timeframe", "1 year")
     # Here you would adjust your data fetching logic based on market and timeframe
-    leverage_data = {"timestamp": "2023-01-01", "leverage": 2.5, "market": market, "timeframe": timeframe}
+    leverage_data = {
+        "timestamp": "2023-01-01",
+        "leverage": 2.5,
+        "market": market,
+        "timeframe": timeframe,
+    }
     return jsonify(leverage_data)
 
-@api.route('/historical_data', methods=['GET'])
+
+@api.route("/historical_data", methods=["GET"])
 def historical_data():
-    market = request.args.get('market', 'AAVE')
-    timeframe = request.args.get('timeframe', 365) # To be handled in HistoricalData query
+    market = request.args.get("market", "AAVE")
+    timeframe = request.args.get(
+        "timeframe", 365
+    )  # To be handled in HistoricalData query
     market_data = HistoricalData.query.filter_by(Market=market).all()
     data_list = [data.to_dict() for data in market_data]
+    pprint(data_list)
     return jsonify(data_list)
 
-@api.route('/supply_transactions', methods=['GET'])
+
+@api.route("/supply_transactions", methods=["GET"])
 def supply_transactions():
     market = request.args.get('market', 'aave v3')
     timeframe = request.args.get('timeframe', '1 year')
@@ -88,13 +104,14 @@ def borrow_transactions():
 
 @api.route('/leveraged_users', methods=['GET'])
 def leveraged_users():
-    aum_threshold = request.args.get('AUM_threshold', 25)
-    market = request.args.get('market', 'mainnet aave v3')
+    aum_threshold = request.args.get("AUM_threshold", 25)
+    market = request.args.get("market", "mainnet aave v3")
     # Implement logic to fetch leveraged users based on AUM threshold and market
     users = [{"user_id": "user1", "leverage_amount": 25}]
     return jsonify(users)
 
-@api.route('/user_history', methods=['GET'])
+
+@api.route("/user_history", methods=["GET"])
 def user_history():
     user_addresses = request.args.getlist('user_address')
     markets = request.args.getlist('market')
