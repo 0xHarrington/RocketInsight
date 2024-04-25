@@ -1,0 +1,4 @@
+nodes/id,nodes/label,edges/from,edges/to
+1,Node 1,1,2
+2,Node 2,2,3
+3,Node 3,3,1

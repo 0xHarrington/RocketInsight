@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import Table from 'react-bootstrap/Table';
 import LineGraph from './graph.js';
+import NetworkGraph from './network.js';
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
 import './style.css'
+import Barchart from './graph.js';
 
 function Pages() {
   const [showpage, setShowpage] = useState(1);
@@ -43,12 +46,13 @@ function Pages() {
                   <h3 align="center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
                 </div>
                 <br />
-                <LineGraph />
+                <Barchart />
                 <br />
                 <h2 align="center">Protocols with rEth Assets</h2>
                 <br />
                 <br />
-                <table>
+                <Table striped bordered hover variant="dark">
+                  <thead>
                   <tr>
                     <td>
                       <div className="thead">
@@ -81,6 +85,8 @@ function Pages() {
                       </div>
                     </td>
                   </tr>
+                  </thead>
+                  <tbody>
                   <tr>
                     <td>
                       <a className={showpage === 3 ? "nav-link active" : "nav-link"} onClick={() => handlepage(3)}><img src="logo1.jpeg" /></a>
@@ -139,7 +145,8 @@ function Pages() {
                       0.01%
                     </td>
                   </tr>
-                </table>
+                  </tbody>
+                </Table>
               </main>
             </div>
 
@@ -193,7 +200,8 @@ function Pages() {
               <main id="products">
                 <h1>Notable Activity</h1>
                 <br />
-                <table>
+                <Table striped bordered variant="dark">
+                  <thead>
                   <tr>
                     <td>
                       <div class="thead">
@@ -218,6 +226,8 @@ function Pages() {
                       </div>
                     </td>
                   </tr>
+                  </thead>
+                  <tbody> 
                   <tr>
                     <td>
                       <div class="firstc">
@@ -326,7 +336,8 @@ function Pages() {
                       </div>
                     </td>
                   </tr>
-                </table>
+                  </tbody> 
+                </Table>
               </main>
             </div>
 
@@ -357,8 +368,9 @@ function Pages() {
                 </div>
                 <div id="cluster">
                   <h2>Cluster:</h2>
+                  <NetworkGraph />
                   <br />
-                  <img src="cluster.png" alt="Cluster" />
+                  
                 </div>
               </main>
             </div>
