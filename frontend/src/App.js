@@ -13,8 +13,12 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/markets" element={<MarketPage />} />
-          <Route path="/wallets" element={<WalletPage />} />
+          <Route path="/markets/aave" element={<MarketPage />} />
+          <Route path="/markets/compound" element={<MarketPage />} />
+          <Route path="/markets/prisma" element={<MarketPage />} />
+          <Route path="/wallets/aave" element={<WalletPage />} />
+          <Route path="/wallets/compound" element={<WalletPage />} />
+          <Route path="/wallets/prisma" element={<WalletPage />} />
         </Routes>
       </div>
     </Router>
