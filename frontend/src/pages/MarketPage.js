@@ -7,6 +7,7 @@ import { Container } from 'react-bootstrap';
 const MarketPage = () => (
     <div id="page">
         <Container>
+            <br />
             {/* Market-specific content */}
             <h1>Market Overview</h1>
             <LineGraph />

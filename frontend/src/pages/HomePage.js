@@ -9,6 +9,7 @@ const HomePage = () => {
         <div id="page-formatting">
             <Container>
                 <div className="page">
+                    <br />
                     <h1>Welcome to RocketInsight</h1>
                     <div className="subheading">
                         <h3 align="center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
