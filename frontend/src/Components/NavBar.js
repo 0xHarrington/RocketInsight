@@ -1,26 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
-const Navi = () => (
-    <nav>
-        <div className="marginals">
-            <div className="VTEE">
-                <Link to="/" className="nav-link">RocketInsight</Link>
-            </div>
-            <div className="VTEE">
-            <ul>
-                <li><Link to="/markets" className="nav-link">Markets</Link></li>
-                <li><Link to="/wallets" className="nav-link">Wallets</Link></li>
-            </ul>
-            </div>
-            <div className="alternative">
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-);
+function Navigation() {
+    return (
+  
+            <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
+                <Container fluid>
+                    <Navbar.Brand as={Link} to="/" >RocketInsight</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="navbarScroll" />
+                    <Navbar.Collapse id="navbarScroll">
+                        <Nav
+                            className="me-auto my-2 my-lg-0"
+                            style={{ maxHeight: '100px' }}
+                            navbarScroll
+                        >
 
-export default Navi;
+                            <NavDropdown title="Markets" id="marketDropdown">
+                                <NavDropdown.Item as={Link} to="/markets" >Aave</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/markets" >
+                                    Compound
+                                </NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/markets">
+                                    Prisma
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Wallets" id="walletDropdown">
+                                <NavDropdown.Item as={Link} to="/wallets">Aave</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/wallets">
+                                    Compound
+                                </NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/wallets">
+                                    Prisma
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+
+    );        
+}
+
+
+export default Navigation;
