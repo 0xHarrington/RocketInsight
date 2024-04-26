@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
-from datetime import datetime, timedelta
-from app.models import *
+from app.models import * 
 from pprint import pprint
 
 api = Blueprint("api", __name__)
