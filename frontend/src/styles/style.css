@@ -100,6 +100,8 @@
   
   .normal-node {
     fill: steelblue;
+    stroke: black;
+    stroke-width: 2;
   }
 
   .viz h2 {

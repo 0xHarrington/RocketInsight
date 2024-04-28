@@ -21,7 +21,7 @@ const NetworkGraph = () => {
 
   const renderGraph = data => {
     const width = 800;
-    const height = 600;
+    const height = 800;
 
     const svg = d3.select(svgRef.current)
       .attr('width', width)
@@ -32,13 +32,13 @@ const NetworkGraph = () => {
     const edges = data.edges;
     nodes.forEach(node => {
       if (node.id === 'AAVE: POOL' || node.id === 'COMPOUND: POOL' || node.id === 'PRISMA: POOL') {
-        node.radius = 20;
+        node.radius = 30;
       }
       else if (node.id.startsWith('AAVE: ')) {
-        node.radius = 10;
-      }
+        node.radius = 15;
+      } 
       else {
-        node.radius = 5;
+        node.radius = 7.5;
       }
     });
 
@@ -55,7 +55,7 @@ const NetworkGraph = () => {
       .attr('stroke-width', 2.5);
 
     link.append('title')
-      .text(d => d["Event Type"]);
+      .text(d => d["Event Type"]);  
 
     simulation.on('tick', function () {
       node.attr('cx', d => d.x)
@@ -80,19 +80,18 @@ const NetworkGraph = () => {
           return 'aave-node';
         }
         else {
-          return 'node';
+          return 'normal-node';
         }
       });
 
     // Add labels to nodes
     node.append('title')
       .text(d => d.id);
-
+      
   };
 
   return (
     <div class="viz">
-      <br />
       <svg ref={svgRef}></svg>
     </div>
   );
