@@ -1,26 +1,20 @@
 # Imports and Helpers
-from flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
 
 # DATABASE STUFF
 db = SQLAlchemy()
-class AllMarkets(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    market = db.Column(db.String(255), nullable=True)
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "market": self.market,
-        }
 
 
 class HistoricalData(db.Model):
-    id = db.Column(db.Integer, primary_key=True) 
+    # set table name to CamelCase version of class name
+    __tablename__ = "HistoricalData"
+
+    id = db.Column(db.Integer, primary_key=True)
     Timestamp = db.Column(db.Integer, nullable=True)
     Market = db.Column(db.String(255), nullable=True)
     Data_Type = db.Column(db.String(255), nullable=True)
     Value = db.Column(db.Float, nullable=True)
-    
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -32,6 +26,9 @@ class HistoricalData(db.Model):
 
 
 class UserHistory(db.Model):
+    # set table name to CamelCase version of class name
+    __tablename__ = "UserHistory"
+
     id = db.Column(db.Integer, primary_key=True)
     event_type = db.Column(db.String(255), nullable=True)
     transaction_hash = db.Column(db.String(255), nullable=True)
@@ -52,4 +49,37 @@ class UserHistory(db.Model):
     premium = db.Column(db.Float, nullable=True)
 
     def to_dict(self):
-        return { }
+        return {
+            "id": self.id,
+            "event_type": self.event_type,
+            "transaction_hash": self.transaction_hash,
+            "address": self.address,
+            "block_hash": self.block_hash,
+            "block_number": self.block_number,
+            "reserve": self.reserve,
+            "on_behalf_of": self.on_behalf_of,
+            "user": self.user,
+            "amount": self.amount,
+            "borrow_rate": self.borrow_rate,
+            "repayer": self.repayer,
+            "use_atokens": self.use_atokens,
+            "to": self.to,
+            "target": self.target,
+            "asset": self.asset,
+            "initiator": self.initiator,
+            "premium": self.premium,
+        }
+
+
+class AllMarkets(db.Model):
+    # set table name to CamelCase version of class name
+    __tablename__ = "AllMarkets"
+
+    id = db.Column(db.Integer, primary_key=True)
+    market = db.Column(db.String(255), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "market": self.market,
+        }
