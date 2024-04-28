@@ -1,3 +1,4 @@
+import pandas as pd
 import re
 
 
@@ -54,8 +55,13 @@ for line in lines:
             known_addresses[ethereum_address.group()] = variable_name
 
 
-def generate_network(transaction_df):
+def generate_network(transaction_df: pd.DataFrame):
     # Create json dict from transaction df
+
+    transaction_df = transaction_df.copy()
+    # Filter out transactions with diminishingly small amounts
+    transaction_df = transaction_df[transaction_df["Amount"] > 1e-10]
+
     nodes = set()
     edges = []
 
