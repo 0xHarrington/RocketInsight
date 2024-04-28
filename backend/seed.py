@@ -13,23 +13,32 @@ import schedule
 import time
 from datetime import datetime, timezone, timedelta
 
-FULL_LOOKBACK = 365
-STANDARD_LOOKBACK = 90
+FULL_LOOKBACK = 1
+STANDARD_LOOKBACK = 10
 UPDATE_LOOKBACK = 1
 
+ALL_MARKETS = ["AAVE", "COMPOUND", "PRISMA"]
 
-def create_app():
+
+def create_app(init_db=False):
     app = Flask(__name__)
+
+    # Set up the app configuration
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+
+    # ensure that this function can be called to initialize
+    # the database and to run the app off the existing database
     db.init_app(app)
+    if init_db:
+        with app.app_context():
+            db.create_all()
+
+    # Bind the api blueprint to the app
     app.register_blueprint(api, url_prefix="/api")
     return app
 
 
-app = create_app()
-
-
-def create_tables():
+def create_tables(app: Flask):
     """
     Create database tables based on SQLAlchemy models.
     """
@@ -37,7 +46,7 @@ def create_tables():
         db.create_all()
 
 
-def add_dataframe_to_db(df, model, table_name):
+def add_dataframe_to_db(app: Flask, df, model, table_name):
     """
     Add a pandas DataFrame to the corresponding SQLAlchemy model table in the database.
 
@@ -51,41 +60,44 @@ def add_dataframe_to_db(df, model, table_name):
     """
     with app.app_context():
         try:
-            create_tables()
+            create_tables(app)
             # Replace NaN values with None
             df = df.where(pd.notnull(df), None)
             # Write DataFrame to SQL table
-            df.to_sql(table_name, con=db.engine, if_exists="replace", index=False)
+            df.to_sql(
+                table_name,
+                con=db.engine,
+                if_exists="replace",
+                index=True,
+                index_label="id",
+            )
             return True
         except Exception as e:
             print(f"Error adding DataFrame to database: {e}")
             return False
 
 
-def read_historical_data():
+def read_historical_data(app: Flask):
     with app.app_context():
         engine = db.engine.connect()
         df = pd.read_sql_table("HistoricalData", con=engine)
         return df
 
 
-global_all_markets = ["AAVE", "COMPOUND", "PRISMA"]
-
-
 # Function to initialize tables
-def db_init():
+def db_init(app: Flask):
     print("Database initialization starting at (UTC): ", datetime.utcnow().isoformat())
 
     # Scrape Historic Data: (non-computed values)
     historic_data = scrape_historic_all(timeframe=FULL_LOOKBACK)
-    add_dataframe_to_db(historic_data, HistoricalData, "HistoricalData")
+    add_dataframe_to_db(app, historic_data, HistoricalData, "HistoricalData")
     historic_data.to_csv(
         f"./db_backups/historic_data_{datetime.utcnow().timestamp()}.csv", index=False
     )
 
     # Get all leveraged users over all markets
     leveraged_users = []
-    for market in global_all_markets:
+    for market in ALL_MARKETS:
         # Get suppliers of rETH for this market
         supply_data = supply_transactions(
             market=market, timeframe=STANDARD_LOOKBACK, token="rETH"
@@ -100,9 +112,7 @@ def db_init():
             )
 
     # Get user history for over-leveraged users
-    interaction_dict = user_history(
-        user_addresses=leveraged_users, markets=global_all_markets
-    )
+    interaction_dict = user_history(user_addresses=leveraged_users, markets=ALL_MARKETS)
     all_dfs = []
     for key, dfs_list in interaction_dict.items():
         # Concatenate all DataFrames in the list for the current wallet address
@@ -118,7 +128,7 @@ def db_init():
         # transaction_df["Amount"] = transaction_df["Amount"] / 10**18
         # transaction_df["Borrow Rate"] = transaction_df["Borrow Rate"] / 10**27
 
-        add_dataframe_to_db(transaction_df, UserHistory, "UserHistory")
+        add_dataframe_to_db(app, transaction_df, UserHistory, "UserHistory")
         transaction_df.to_csv(
             f"./db_backups/user_history_{datetime.utcnow().timestamp()}.csv",
             index=False,
@@ -182,7 +192,7 @@ def db_update():
     z = earliest + (6 * 3600)
     temp = temp[temp["Timestamp"] >= z]
     # Store as new table
-    add_dataframe_to_db(temp, HistoricalData, "HistoricalData")
+    add_dataframe_to_db(app, temp, HistoricalData, "HistoricalData")
     temp.to_csv(
         f"./db_backups/historic_data_{datetime.utcnow().timestamp()}.csv", index=False
     )
@@ -190,7 +200,7 @@ def db_update():
     # Update user history table
     # Get all leveraged users over all markets
     leveraged_users = []
-    for market in global_all_markets:
+    for market in ALL_MARKETS:
         # Get suppliers of rETH for this market
         supply_data = supply_transactions(
             market=market, timeframe=STANDARD_LOOKBACK, token="rETH"
@@ -205,9 +215,7 @@ def db_update():
             )
 
     # New user history
-    interaction_dict = user_history(
-        user_addresses=leveraged_users, markets=global_all_markets
-    )
+    interaction_dict = user_history(user_addresses=leveraged_users, markets=ALL_MARKETS)
     all_dfs = []
     for key, dfs_list in interaction_dict.items():
         # Concatenate all DataFrames in the list for the current wallet address
@@ -223,7 +231,7 @@ def db_update():
         # transaction_df["Amount"] = transaction_df["Amount"] / 10**18
         # transaction_df["Borrow Rate"] = transaction_df["Borrow Rate"] / 10**27
 
-        add_dataframe_to_db(transaction_df, UserHistory, "UserHistory")
+        add_dataframe_to_db(app, transaction_df, UserHistory, "UserHistory")
         transaction_df.to_csv(
             f"./db_backups/user_history_{datetime.utcnow().timestamp()}.csv",
             index=False,
@@ -238,15 +246,18 @@ def db_update():
     print()
 
 
-# Initialize database
-db_init()
+if __name__ == "__main__":
+    app = create_app(True)
 
-# Schedule database updates to every 6 hours (SET TO SYSTEM TIME ZONE)
-schedule.every().day.at("00:05").do(db_update)
-schedule.every().day.at("06:05").do(db_update)
-schedule.every().day.at("12:05").do(db_update)
-schedule.every().day.at("18:05").do(db_update)
+    # Initialize database
+    db_init(app)
 
-while True:
-    schedule.run_pending()
-    time.sleep(10)
+    # Schedule database updates to every 6 hours (SET TO SYSTEM TIME ZONE)
+    schedule.every().day.at("00:05").do(db_update)
+    schedule.every().day.at("06:05").do(db_update)
+    schedule.every().day.at("12:05").do(db_update)
+    schedule.every().day.at("18:05").do(db_update)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(10)
