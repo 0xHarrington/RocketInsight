@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
-from app.models import db, create_app
+from app.models import db
 from app.api import api
+from seed import create_app
 
 
 if __name__ == "__main__":
