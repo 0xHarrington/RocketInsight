@@ -1,8 +1,20 @@
 from flask import Blueprint, jsonify, request
-from app.models import * 
+from app.models import *
 from pprint import pprint
 
 api = Blueprint("api", __name__)
+
+
+@api.route("/historical_data", methods=["GET"])
+def historical_data():
+    market = request.args.get("market", "AAVE")
+    timeframe = request.args.get(
+        "timeframe", 365
+    )  # To be handled in HistoricalData query
+    market_data = HistoricalData.query.filter_by(Market=market).all()
+    data_list = [data.to_dict() for data in market_data]
+    pprint(data_list)
+    return jsonify(data_list)
 
 
 @api.route("/all_markets", methods=["GET"])
@@ -29,22 +41,10 @@ def historical_leverage():
     return jsonify(leverage_data)
 
 
-@api.route("/historical_data", methods=["GET"])
-def historical_data():
-    market = request.args.get("market", "AAVE")
-    timeframe = request.args.get(
-        "timeframe", 365
-    )  # To be handled in HistoricalData query
-    market_data = HistoricalData.query.filter_by(Market=market).all()
-    data_list = [data.to_dict() for data in market_data]
-    pprint(data_list)
-    return jsonify(data_list)
-
-
 @api.route("/supply_transactions", methods=["GET"])
 def supply_transactions():
-    market = request.args.get('market', 'aave v3')
-    timeframe = request.args.get('timeframe', '1 year')
+    market = request.args.get("market", "aave v3")
+    timeframe = request.args.get("timeframe", "1 year")
 
     # Query supply transactions based on market and timeframe
     supply_transactions = Transaction.query.filter_by(reserve=market).all()
@@ -64,17 +64,17 @@ def supply_transactions():
             "transaction_index": transaction.transaction_index,
             "transaction_hash": transaction.transaction_hash,
             "block_hash": transaction.block_hash,
-            "block_number": transaction.block_number
+            "block_number": transaction.block_number,
         }
         transactions.append(transaction_data)
 
     return jsonify(transactions)
 
 
-@api.route('/borrow_transactions', methods=['GET'])
+@api.route("/borrow_transactions", methods=["GET"])
 def borrow_transactions():
-    market = request.args.get('market', 'aave v3')
-    timeframe = request.args.get('timeframe', '1 year')
+    market = request.args.get("market", "aave v3")
+    timeframe = request.args.get("timeframe", "1 year")
 
     # Query borrow transactions based on market and timeframe
     borrow_transactions = Transaction.query.filter_by(reserve=market).all()
@@ -94,14 +94,14 @@ def borrow_transactions():
             "transaction_index": transaction.transaction_index,
             "transaction_hash": transaction.transaction_hash,
             "block_hash": transaction.block_hash,
-            "block_number": transaction.block_number
+            "block_number": transaction.block_number,
         }
         transactions.append(transaction_data)
 
     return jsonify(transactions)
 
 
-@api.route('/leveraged_users', methods=['GET'])
+@api.route("/leveraged_users", methods=["GET"])
 def leveraged_users():
     aum_threshold = request.args.get("AUM_threshold", 25)
     market = request.args.get("market", "mainnet aave v3")
@@ -112,8 +112,8 @@ def leveraged_users():
 
 @api.route("/user_history", methods=["GET"])
 def user_history():
-    user_addresses = request.args.getlist('user_address')
-    markets = request.args.getlist('market')
+    user_addresses = request.args.getlist("user_address")
+    markets = request.args.getlist("market")
 
     # Initialize an empty list to store user history data
     user_history_data = []
@@ -122,7 +122,9 @@ def user_history():
     for user_address in user_addresses:
         for market in markets:
             # Query the database to fetch user history based on user address and market
-            user_history_records = NewUserHistory.query.filter_by(address=user_address, reserve=market).all()
+            user_history_records = NewUserHistory.query.filter_by(
+                address=user_address, reserve=market
+            ).all()
 
             # Process fetched records and append them to user_history_data list
             for record in user_history_records:
@@ -146,7 +148,7 @@ def user_history():
                     "asset": record.asset,
                     "referral_code": record.referral_code,
                     "initiator": record.initiator,
-                    "premium": record.premium
+                    "premium": record.premium,
                     # Add more fields as needed from the NewUserHistory model
                 }
                 user_history_data.append(history_entry)
