@@ -19,7 +19,7 @@ def historical_data():
 
 @api.route("/all_markets", methods=["GET"])
 def all_markets():
-    # This endpoint might not need arguments based on the initial description
+    # This endpoint will populate the landing page table
     markets_data = {
         "market1": {"url": "https://market1.example.com"},
         "market2": {"url": "https://market2.example.com"},
