@@ -9,30 +9,40 @@ from dotenv import load_dotenv
 
 # Map token names to contract addresses
 token_address_map = {
-    'rETH': '0xae78736Cd615f374D3085123A210448E74Fc6393'
+    "rETH": "0xae78736Cd615f374D3085123A210448E74Fc6393"
     # fill with rest
 }
 
 # Map market name to "Pool" contract address and abi filepath
 contract_address_abi_map = {
-    'AAVE': ('0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3', './abi/AAVE_PoolDataProvider_ABI.json'),
-    'COMPOUND': ('0xA17581A9E3356d9A858b789D68B4d866e593aE94', './abi/Compound_ABI.json'),
-    'PRISMA': ('0x58fa5521f48b258B5e48A56b9B1bd95bFFA1eb1C', './abi/Prisma_MultiTroveGetter_abi.json')
+    "AAVE": (
+        "0x7B4EB56E7CD4b454BA8ff71E4518426369a138a3",
+        "./abi/AAVE_PoolDataProvider_ABI.json",
+    ),
+    "COMPOUND": (
+        "0xA17581A9E3356d9A858b789D68B4d866e593aE94",
+        "./abi/Compound_ABI.json",
+    ),
+    "PRISMA": (
+        "0x58fa5521f48b258B5e48A56b9B1bd95bFFA1eb1C",
+        "./abi/Prisma_MultiTroveGetter_abi.json",
+    ),
     # fill with rest
 }
 
 # Connect to ETH blockchain with infura API key
 load_dotenv()
-api_key = os.getenv('API_KEY')
-infura_url = f'https://mainnet.infura.io/v3/{api_key}'
+api_key = os.getenv("API_KEY")
+infura_url = f"https://mainnet.infura.io/v3/{api_key}"
 w3 = Web3(Web3.HTTPProvider(infura_url))
-
 
 
 # Align to nearest previous interval
 def align_to_interval(dt, interval_hours):
     aligned_hour = (dt.hour // interval_hours) * interval_hours
-    return dt.replace(hour=aligned_hour, minute=0, second=0, microsecond=0, tzinfo=timezone.utc)
+    return dt.replace(
+        hour=aligned_hour, minute=0, second=0, microsecond=0, tzinfo=timezone.utc
+    )
 
 
 # Find block number closest to timestamp with binary search
@@ -49,7 +59,9 @@ def get_block_number_by_timestamp(target_timestamp):
 
 
 # Interpolate block number of target time between start and end blocks to minimize api calls
-def interpolate_block_numbers(start_block, end_block, start_time, end_time, target_time):
+def interpolate_block_numbers(
+    start_block, end_block, start_time, end_time, target_time
+):
     block_interval = end_block - start_block
     time_interval = (end_time - start_time).total_seconds()
     time_offset = (target_time - start_time).total_seconds()
@@ -82,18 +94,15 @@ def get_blocks_for_timeframe(interval_hours, days_back):
             block_number = end_block
         else:
             # Find interpolated block number
-            block_number = interpolate_block_numbers(start_block,
-                                                     end_block,
-                                                     start_datetime,
-                                                     end_datetime,
-                                                     current_datetime)
+            block_number = interpolate_block_numbers(
+                start_block, end_block, start_datetime, end_datetime, current_datetime
+            )
 
-        formatted_key = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        formatted_key = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
         block_numbers[current_datetime.timestamp()] = block_number
         current_datetime += timedelta(hours=interval_hours)
 
     return block_numbers
-
 
 
 # Reserve data object
@@ -113,22 +122,24 @@ class ReserveData:
         self.last_update_timestamp = data[11]
 
     def __repr__(self):
-        return (f"ReserveData(\n\tunbacked_aTokens = {self.unbacked_aTokens}, "
-                f"\n\ttokens_accrued_to_treasury = {self.tokens_accrued_to_treasury}, "
-                f"\n\ttotal_aToken_supply = {self.total_aToken_supply}, "
-                f"\n\ttotal_stable_debt = {self.total_stable_debt}, "
-                f"\n\ttotal_variable_debt = {self.total_variable_debt}, "
-                f"\n\tliquidity_rate = {self.liquidity_rate}, "
-                f"\n\tvariable_borrow_rate = {self.variable_borrow_rate}, "
-                f"\n\tstable_borrow_rate = {self.stable_borrow_rate}, "
-                f"\n\taverage_stable_borrow_rate = {self.average_stable_borrow_rate}, "
-                f"\n\tliquidity_index = {self.liquidity_index}, "
-                f"\n\tvariable_borrow_index = {self.variable_borrow_index}, "
-                f"\n\tlast_update_timestamp = {self.last_update_timestamp}\n)")
+        return (
+            f"ReserveData(\n\tunbacked_aTokens = {self.unbacked_aTokens}, "
+            f"\n\ttokens_accrued_to_treasury = {self.tokens_accrued_to_treasury}, "
+            f"\n\ttotal_aToken_supply = {self.total_aToken_supply}, "
+            f"\n\ttotal_stable_debt = {self.total_stable_debt}, "
+            f"\n\ttotal_variable_debt = {self.total_variable_debt}, "
+            f"\n\tliquidity_rate = {self.liquidity_rate}, "
+            f"\n\tvariable_borrow_rate = {self.variable_borrow_rate}, "
+            f"\n\tstable_borrow_rate = {self.stable_borrow_rate}, "
+            f"\n\taverage_stable_borrow_rate = {self.average_stable_borrow_rate}, "
+            f"\n\tliquidity_index = {self.liquidity_index}, "
+            f"\n\tvariable_borrow_index = {self.variable_borrow_index}, "
+            f"\n\tlast_update_timestamp = {self.last_update_timestamp}\n)"
+        )
 
 
 # Historical borrow function
-def historical_data(market, timeframe=365, interval=6, token='rETH'):
+def historical_data(market, timeframe=365, interval=6, token="rETH"):
     """
     Fetches historical data for a specified token from the specified protocol over a given timeframe and at specified intervals.
 
@@ -142,7 +153,7 @@ def historical_data(market, timeframe=365, interval=6, token='rETH'):
     pandas.DataFrame: A DataFrame where each row corresponds to a time point within the timeframe and includes the following columns:
         - 'Timestamp': The timestamp in 'YYYY-MM-DD HH:MM:SS' format.
         - 'Market': The lending and borrowing market from which the data was fetched.
-        - 'Data Type': Label for the data type fetched.
+        - 'Data_Type': Label for the data type fetched.
         - 'Value': Numeric value of the data fetched.
 
     """
@@ -164,58 +175,67 @@ def historical_data(market, timeframe=365, interval=6, token='rETH'):
 
         # Get borrow and supply amounts
         data = {
-            'Timestamp': [],
-            'Market': [],
-            'Data Type': [],
-            'Value': [],
+            "Timestamp": [],
+            "Market": [],
+            "Data_Type": [],
+            "Value": [],
         }
 
         # Modify our "data" dictionary according to market parameter entered
-        if market == 'AAVE':
+        if market == "AAVE":
             for timestamp, block_number in blocks.items():
-                reserve_data_result = smart_contract.functions.getReserveData(token_address).call(
-                    block_identifier=block_number)
+                reserve_data_result = smart_contract.functions.getReserveData(
+                    token_address
+                ).call(block_identifier=block_number)
                 reserve_data = ReserveData(reserve_data_result)
 
                 # Pull out borrowed and supplied totals
-                supplied_total = (reserve_data.total_aToken_supply) / 10 ** 18
-                borrowed_total = (reserve_data.total_stable_debt + reserve_data.total_variable_debt) / 10 ** 18
+                supplied_total = (reserve_data.total_aToken_supply) / 10**18
+                borrowed_total = (
+                    reserve_data.total_stable_debt + reserve_data.total_variable_debt
+                ) / 10**18
 
                 # Store borrowed rETH
-                data['Timestamp'].append(timestamp)
-                data['Market'].append(market)
-                data['Data Type'].append('Supplied rETH')
-                data['Value'].append(supplied_total)
+                data["Timestamp"].append(timestamp)
+                data["Market"].append(market)
+                data["Data_Type"].append("Supplied rETH")
+                data["Value"].append(supplied_total)
 
                 # Store supplied rETH
-                data['Timestamp'].append(timestamp)
-                data['Market'].append(market)
-                data['Data Type'].append('Borrowed rETH')
-                data['Value'].append(borrowed_total)
+                data["Timestamp"].append(timestamp)
+                data["Market"].append(market)
+                data["Data_Type"].append("Borrowed rETH")
+                data["Value"].append(borrowed_total)
 
-        elif market == 'COMPOUND':
+        elif market == "COMPOUND":
             for timestamp, block_number in blocks.items():
                 # Pull out supplied totals
-                reserve_data_result = smart_contract.functions.totalsCollateral(token_address).call(
-                    block_identifier=block_number)
-                supplied_total = (reserve_data_result[0]) / 10 ** 18
+                reserve_data_result = smart_contract.functions.totalsCollateral(
+                    token_address
+                ).call(block_identifier=block_number)
+                supplied_total = (reserve_data_result[0]) / 10**18
 
                 # Pull out borrow total OF MARKET -- NOT rETH
-                borrowed_total = smart_contract.functions.totalBorrow().call(block_identifier=block_number) / 10 ** 18
+                borrowed_total = (
+                    smart_contract.functions.totalBorrow().call(
+                        block_identifier=block_number
+                    )
+                    / 10**18
+                )
 
                 # Store supplied rETH
-                data['Timestamp'].append(timestamp)
-                data['Market'].append(market)
-                data['Data Type'].append('Supplied rETH')
-                data['Value'].append(supplied_total)
+                data["Timestamp"].append(timestamp)
+                data["Market"].append(market)
+                data["Data_Type"].append("Supplied rETH")
+                data["Value"].append(supplied_total)
 
                 # Store total borrowed -- NOT rETH
-                data['Timestamp'].append(timestamp)
-                data['Market'].append(market)
-                data['Data Type'].append('Borrowed ETH')
-                data['Value'].append(borrowed_total)
+                data["Timestamp"].append(timestamp)
+                data["Market"].append(market)
+                data["Data_Type"].append("Borrowed ETH")
+                data["Value"].append(borrowed_total)
 
-        elif market == 'PRISMA':
+        elif market == "PRISMA":
             for timestamp, block_number in blocks.items():
                 multiTroveGetter = smart_contract
 
@@ -223,32 +243,35 @@ def historical_data(market, timeframe=365, interval=6, token='rETH'):
                 trove_data = None
                 try:
                     trove_data = multiTroveGetter.functions.getMultipleSortedTroves(
-                        '0x0d6741f1A3A538F78009ca2e3a13F9cB1478B2d0', 0, 1000).call(block_identifier=block_number)
+                        "0x0d6741f1A3A538F78009ca2e3a13F9cB1478B2d0", 0, 1000
+                    ).call(block_identifier=block_number)
                 except:
-                    trove_data = [('', 0, 0, 0, 0, 0)]
+                    trove_data = [("", 0, 0, 0, 0, 0)]
 
                 try:
                     trove_data.extend(
-                        multiTroveGetter.functions.getMultipleSortedTroves('0xe0e255FD5281bEc3bB8fa1569a20097D9064E445',
-                                                                           0, 1000).call(block_identifier=block_number))
+                        multiTroveGetter.functions.getMultipleSortedTroves(
+                            "0xe0e255FD5281bEc3bB8fa1569a20097D9064E445", 0, 1000
+                        ).call(block_identifier=block_number)
+                    )
                 except:
                     pass
-                supplied_total = sum(item[2] for item in trove_data) / 10 ** 18
+                supplied_total = sum(item[2] for item in trove_data) / 10**18
 
                 # Pull out total mkUSD borrowed against rETH
-                borrowed_total = sum(item[1] for item in trove_data) / 10 ** 18
+                borrowed_total = sum(item[1] for item in trove_data) / 10**18
 
                 # Store supplied rETH
-                data['Timestamp'].append(timestamp)
-                data['Market'].append(market)
-                data['Data Type'].append('Supplied rETH')
-                data['Value'].append(supplied_total)
+                data["Timestamp"].append(timestamp)
+                data["Market"].append(market)
+                data["Data_Type"].append("Supplied rETH")
+                data["Value"].append(supplied_total)
 
                 # Store total borrowed -- NOT rETH
-                data['Timestamp'].append(timestamp)
-                data['Market'].append(market)
-                data['Data Type'].append('Borrowed mkUSD (against rETH)')
-                data['Value'].append(borrowed_total)
+                data["Timestamp"].append(timestamp)
+                data["Market"].append(market)
+                data["Data_Type"].append("Borrowed mkUSD (against rETH)")
+                data["Value"].append(borrowed_total)
 
         else:
             print("FUTURE MARKETS HERE")
@@ -261,7 +284,7 @@ def historical_data(market, timeframe=365, interval=6, token='rETH'):
         return []
 
 
-global_all_markets = ['AAVE', 'COMPOUND', 'PRISMA']
+global_all_markets = ["AAVE", "COMPOUND", "PRISMA"]
 
 
 def scrape_historic_all(timeframe=365):
@@ -273,7 +296,7 @@ def scrape_historic_all(timeframe=365):
     pandas.DataFrame: A DataFrame which contains historic data for all markets, where columns are:
         - 'Timestamp': The timestamp UTC format.
         - 'Market': The lending and borrowing market from which the data was fetched.
-        - 'Data Type': Label for the data type fetched.
+        - 'Data_Type': Label for the data type fetched.
         - 'Value': Numeric value of the data fetched.
     """
     full_df = None
@@ -286,13 +309,15 @@ def scrape_historic_all(timeframe=365):
 
     # compute cumulative amounts of borrowed and supplied rETH
     # filter for 'Supplied rETH' or 'Borrowed rETH'
-    filtered_df = full_df[full_df['Data Type'].isin(['Supplied rETH', 'Borrowed rETH'])]
+    filtered_df = full_df[full_df["Data_Type"].isin(["Supplied rETH", "Borrowed rETH"])]
 
     # Group by timestamp and sum value column
-    cumulative_df = filtered_df.groupby(['Timestamp', 'Data Type'])['Value'].sum().reset_index()
+    cumulative_df = (
+        filtered_df.groupby(["Timestamp", "Data_Type"])["Value"].sum().reset_index()
+    )
 
     # Add market label to cumulative values
-    cumulative_df['Market'] = 'All Markets'
+    cumulative_df["Market"] = "All Markets"
 
     # concatenate cumulative totals to previous full df
     full_df = pd.concat([full_df, cumulative_df], ignore_index=True)
