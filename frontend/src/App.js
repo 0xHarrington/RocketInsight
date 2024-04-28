@@ -16,9 +16,7 @@ function App() {
           <Route path="/markets/aave" element={<MarketPage />} />
           <Route path="/markets/compound" element={<MarketPage />} />
           <Route path="/markets/prisma" element={<MarketPage />} />
-          <Route path="/wallets/aave" element={<WalletPage />} />
-          <Route path="/wallets/compound" element={<WalletPage />} />
-          <Route path="/wallets/prisma" element={<WalletPage />} />
+          <Route path="/wallets" element={<WalletPage />} />
         </Routes>
       </div>
     </Router>

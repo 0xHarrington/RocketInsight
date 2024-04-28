@@ -28,15 +28,7 @@ function Navigation() {
                                     Prisma
                                 </NavDropdown.Item>
                             </NavDropdown>
-                            <NavDropdown title="Wallets" id="walletDropdown">
-                                <NavDropdown.Item as={Link} to="/wallets/aave">Aave</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/wallets/compound">
-                                    Compound
-                                </NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/wallets/prisma">
-                                    Prisma
-                                </NavDropdown.Item>
-                            </NavDropdown>
+                            <Nav.Link as={Link} to="/wallets">Wallets</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
