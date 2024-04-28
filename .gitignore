@@ -1,5 +1,5 @@
 ## Network graph json is too large
-# network_graph.json
+network_graph.json
 
 ## Ensuring db backups are omitted
 *.csv
