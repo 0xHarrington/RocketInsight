@@ -1,7 +1,7 @@
 import re
 
 
-code = '''
+code = """
 AAVE: POOL_ADDRESSES_PROVIDER = IPoolAddressesProvider(0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e);
 AAVE: POOL = IPool(0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2);
 AAVE: POOL_IMPL = 0x5FAab9E1adbddaD0a08734BE8a52185Fd6558E14;
@@ -37,19 +37,19 @@ AAVE: SAVINGS_DAI_TOKEN_WRAPPER = 0xE28E2c8d240dd5eBd0adcab86fbD79df7a052034;
 AAVE: WRAPPED_TOKEN_GATEWAY = 0xD322A49006FC828F9B5B37Ab215F99B4E5caB19C;
 COMPOUND: POOL = 0xA17581A9E3356d9A858b789D68B4d866e593aE94;
 PRISMA: POOL = 0xed8B26D99834540C5013701bB3715faFD39993Ba;
-'''
+"""
 
 # Split the string into lines
-lines = code.split('\n')
+lines = code.split("\n")
 
 known_addresses = {}
 for line in lines:
     # Splitting the line into variable name and the rest
-    parts = line.split('=')
+    parts = line.split("=")
     if len(parts) == 2:
         variable_name = parts[0].strip()
         # Extracting the Ethereum address
-        ethereum_address = re.search(r'0x[a-fA-F0-9]{40}', parts[1])
+        ethereum_address = re.search(r"0x[a-fA-F0-9]{40}", parts[1])
         if ethereum_address:
             known_addresses[ethereum_address.group()] = variable_name
 
@@ -64,30 +64,49 @@ def generate_network(transaction_df):
         # Drop NaN values from current transaction
         transaction_data = row.dropna().to_dict()
 
-        if row['Event Type'] == 'Withdraw(Prisma)':
-            transaction_data['Event Type'] = 'Withdraw'
+        if row["Event Type"] == "Withdraw(Prisma)":
+            transaction_data["Event Type"] = "Withdraw"
             # Store nodes
-            user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-            address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+            user = (
+                (known_addresses[row["User"]])
+                if row["User"] in known_addresses
+                else row["User"]
+            )
+            address = (
+                (known_addresses[row["Address"]])
+                if row["Address"] in known_addresses
+                else row["Address"]
+            )
             nodes.add(user)
             nodes.add(address)
 
             # Store edge
             edge_data = {
-                'source': address,
-                'target': user,
-                'weight': int(row['Amount'])
+                "source": address,
+                "target": user,
+                "weight": float(row["Amount"]),
             }
             edge_data.update(transaction_data)
             edges.append(edge_data)
 
-
-        elif row['Event Type'] == 'Withdraw':
-            if row['User'] != row['To']:
+        elif row["Event Type"] == "Withdraw":
+            if row["User"] != row["To"]:
                 # Store nodes
-                address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
-                user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-                to = (known_addresses[row['To']]) if row['To'] in known_addresses else row['To']
+                address = (
+                    (known_addresses[row["Address"]])
+                    if row["Address"] in known_addresses
+                    else row["Address"]
+                )
+                user = (
+                    (known_addresses[row["User"]])
+                    if row["User"] in known_addresses
+                    else row["User"]
+                )
+                to = (
+                    (known_addresses[row["To"]])
+                    if row["To"] in known_addresses
+                    else row["To"]
+                )
                 nodes.add(user)
                 nodes.add(address)
                 nodes.add(to)
@@ -95,61 +114,88 @@ def generate_network(transaction_df):
                 # Store edges
                 # Address -> User
                 edge1_data = {
-                    'source': address,
-                    'target': user,
-                    'weight': int(row['Amount'])
+                    "source": address,
+                    "target": user,
+                    "weight": float(row["Amount"]),
                 }
                 edge1_data.update(transaction_data)
                 edges.append(edge1_data)
 
                 # User -> To
                 edge2_data = {
-                    'source': user,
-                    'target': to,
-                    'weight': int(row['Amount'])
+                    "source": user,
+                    "target": to,
+                    "weight": float(row["Amount"]),
                 }
                 edge2_data.update(transaction_data)
                 edges.append(edge2_data)
 
             else:
                 # Store nodes
-                user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-                address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+                user = (
+                    (known_addresses[row["User"]])
+                    if row["User"] in known_addresses
+                    else row["User"]
+                )
+                address = (
+                    (known_addresses[row["Address"]])
+                    if row["Address"] in known_addresses
+                    else row["Address"]
+                )
                 nodes.add(user)
                 nodes.add(address)
 
                 # Store edge
                 edge_data = {
-                    'source': address,
-                    'target': user,
-                    'weight': int(row['Amount'])
+                    "source": address,
+                    "target": user,
+                    "weight": float(row["Amount"]),
                 }
                 edge_data.update(transaction_data)
                 edges.append(edge_data)
 
-        elif row['Event Type'] == 'Supply':
+        elif row["Event Type"] == "Supply":
             # Store nodes
-            user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-            address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+            user = (
+                (known_addresses[row["User"]])
+                if row["User"] in known_addresses
+                else row["User"]
+            )
+            address = (
+                (known_addresses[row["Address"]])
+                if row["Address"] in known_addresses
+                else row["Address"]
+            )
             nodes.add(user)
             nodes.add(address)
 
             # Store edge
             edge_data = {
-                'source': user,
-                'target': address,
-                'weight': int(row['Amount'])
+                "source": user,
+                "target": address,
+                "weight": float(row["Amount"]),
             }
             edge_data.update(transaction_data)
             edges.append(edge_data)
 
-        elif row['Event Type'] == 'Borrow':
-            if row['User'] != row['On Behalf Of']:
+        elif row["Event Type"] == "Borrow":
+            if row["User"] != row["On Behalf Of"]:
                 # Store nodes
-                user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-                address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
-                onBehalfOf = (known_addresses[row['On Behalf Of']]) if row['On Behalf Of'] in known_addresses else row[
-                    'On Behalf Of']
+                user = (
+                    (known_addresses[row["User"]])
+                    if row["User"] in known_addresses
+                    else row["User"]
+                )
+                address = (
+                    (known_addresses[row["Address"]])
+                    if row["Address"] in known_addresses
+                    else row["Address"]
+                )
+                onBehalfOf = (
+                    (known_addresses[row["On Behalf Of"]])
+                    if row["On Behalf Of"] in known_addresses
+                    else row["On Behalf Of"]
+                )
                 nodes.add(user)
                 nodes.add(address)
                 nodes.add(onBehalfOf)
@@ -157,44 +203,64 @@ def generate_network(transaction_df):
                 # Store edges
                 # Address -> User
                 edge1_data = {
-                    'source': address,
-                    'target': user,
-                    'weight': int(row['Amount'])
+                    "source": address,
+                    "target": user,
+                    "weight": float(row["Amount"]),
                 }
                 edge1_data.update(transaction_data)
                 edges.append(edge1_data)
 
                 # User -> On Behalf Of
                 edge2_data = {
-                    'source': user,
-                    'target': onBehalfOf,
-                    'weight': int(row['Amount'])
+                    "source": user,
+                    "target": onBehalfOf,
+                    "weight": float(row["Amount"]),
                 }
                 edge2_data.update(transaction_data)
                 edges.append(edge2_data)
 
             else:
                 # Store nodes
-                user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-                address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+                user = (
+                    (known_addresses[row["User"]])
+                    if row["User"] in known_addresses
+                    else row["User"]
+                )
+                address = (
+                    (known_addresses[row["Address"]])
+                    if row["Address"] in known_addresses
+                    else row["Address"]
+                )
                 nodes.add(user)
                 nodes.add(address)
 
                 # Store edge
                 edge_data = {
-                    'source': address,
-                    'target': user,
-                    'weight': int(row['Amount'])
+                    "source": address,
+                    "target": user,
+                    "weight": float(row["Amount"]),
                 }
                 edge_data.update(transaction_data)
                 edges.append(edge_data)
 
-        elif row['Event Type'] == 'Repay':
-            if row['User'] != row['Repayer']:
+        elif row["Event Type"] == "Repay":
+            if row["User"] != row["Repayer"]:
                 # Store nodes
-                user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-                address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
-                repayer = (known_addresses[row['Repayer']]) if row['Repayer'] in known_addresses else row['Repayer']
+                user = (
+                    (known_addresses[row["User"]])
+                    if row["User"] in known_addresses
+                    else row["User"]
+                )
+                address = (
+                    (known_addresses[row["Address"]])
+                    if row["Address"] in known_addresses
+                    else row["Address"]
+                )
+                repayer = (
+                    (known_addresses[row["Repayer"]])
+                    if row["Repayer"] in known_addresses
+                    else row["Repayer"]
+                )
                 nodes.add(user)
                 nodes.add(address)
                 nodes.add(repayer)
@@ -202,43 +268,63 @@ def generate_network(transaction_df):
                 # Store edges
                 # User -> Repayer
                 edge1_data = {
-                    'source': user,
-                    'target': repayer,
-                    'weight': int(row['Amount'])
+                    "source": user,
+                    "target": repayer,
+                    "weight": float(row["Amount"]),
                 }
                 edge1_data.update(transaction_data)
                 edges.append(edge1_data)
 
                 # Repayer -> Address
                 edge2_data = {
-                    'source': repayer,
-                    'target': address,
-                    'weight': int(row['Amount'])
+                    "source": repayer,
+                    "target": address,
+                    "weight": float(row["Amount"]),
                 }
                 edge2_data.update(transaction_data)
                 edges.append(edge2_data)
 
             else:
                 # Store nodes
-                user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-                address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+                user = (
+                    (known_addresses[row["User"]])
+                    if row["User"] in known_addresses
+                    else row["User"]
+                )
+                address = (
+                    (known_addresses[row["Address"]])
+                    if row["Address"] in known_addresses
+                    else row["Address"]
+                )
                 nodes.add(user)
                 nodes.add(address)
 
                 # Store edge
                 edge_data = {
-                    'source': address,
-                    'target': user,
-                    'weight': int(row['Amount'])
+                    "source": address,
+                    "target": user,
+                    "weight": float(row["Amount"]),
                 }
                 edge_data.update(transaction_data)
                 edges.append(edge_data)
 
-        elif row['Event Type'] == 'Flashloan':
+        elif row["Event Type"] == "Flashloan":
             # Store nodes
-            address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
-            initiator = (known_addresses[row['Initiator']]) if row['Initiator'] in known_addresses else row['Initiator']
-            target = (known_addresses[row['Target']]) if row['Target'] in known_addresses else row['Target']
+            address = (
+                (known_addresses[row["Address"]])
+                if row["Address"] in known_addresses
+                else row["Address"]
+            )
+            initiator = (
+                (known_addresses[row["Initiator"]])
+                if row["Initiator"] in known_addresses
+                else row["Initiator"]
+            )
+            target = (
+                (known_addresses[row["Target"]])
+                if row["Target"] in known_addresses
+                else row["Target"]
+            )
             nodes.add(address)
             nodes.add(initiator)
             nodes.add(target)
@@ -246,59 +332,71 @@ def generate_network(transaction_df):
             # Store edges
             # Address -> Initiator
             edge1_data = {
-                'source': address,
-                'target': initiator,
-                'weight': int(row['Amount'])
+                "source": address,
+                "target": initiator,
+                "weight": float(row["Amount"]),
             }
             edge1_data.update(transaction_data)
             edges.append(edge1_data)
 
             # Initiator -> Target
             edge2_data = {
-                'source': initiator,
-                'target': target,
-                'weight': int(row['Amount'])
+                "source": initiator,
+                "target": target,
+                "weight": float(row["Amount"]),
             }
             edge2_data.update(transaction_data)
             edges.append(edge2_data)
 
-        elif row['Event Type'] == 'SupplyCollateral':
+        elif row["Event Type"] == "SupplyCollateral":
             # Store nodes
-            user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-            address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+            user = (
+                (known_addresses[row["User"]])
+                if row["User"] in known_addresses
+                else row["User"]
+            )
+            address = (
+                (known_addresses[row["Address"]])
+                if row["Address"] in known_addresses
+                else row["Address"]
+            )
             nodes.add(user)
             nodes.add(address)
 
             # Store edge
             edge_data = {
-                'source': user,
-                'target': address,
-                'weight': int(row['Amount'])
+                "source": user,
+                "target": address,
+                "weight": float(row["Amount"]),
             }
             edge_data.update(transaction_data)
             edges.append(edge_data)
 
-        elif row['Event Type'] == 'Provide':
+        elif row["Event Type"] == "Provide":
             # Store nodes
-            user = (known_addresses[row['User']]) if row['User'] in known_addresses else row['User']
-            address = (known_addresses[row['Address']]) if row['Address'] in known_addresses else row['Address']
+            user = (
+                (known_addresses[row["User"]])
+                if row["User"] in known_addresses
+                else row["User"]
+            )
+            address = (
+                (known_addresses[row["Address"]])
+                if row["Address"] in known_addresses
+                else row["Address"]
+            )
             nodes.add(user)
             nodes.add(address)
 
             # Store edge
             edge_data = {
-                'source': user,
-                'target': address,
-                'weight': int(row['Amount'])
+                "source": user,
+                "target": address,
+                "weight": float(row["Amount"]),
             }
             edge_data.update(transaction_data)
             edges.append(edge_data)
 
     nodes_list = [{"id": node} for node in nodes]
-    graph_data = {
-        "nodes": nodes_list,
-        "edges": edges
-    }
+    graph_data = {"nodes": nodes_list, "edges": edges}
 
     return graph_data
-
