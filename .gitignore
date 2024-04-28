@@ -1,3 +1,6 @@
+## Ensuring db backups are omitted
+*.csv
+
 ### remote instance private key ###
 *.pem
 
