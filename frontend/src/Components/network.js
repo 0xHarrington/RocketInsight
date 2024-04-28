@@ -36,7 +36,7 @@ const NetworkGraph = () => {
       }
       else if (node.id.startsWith('AAVE: ')) {
         node.radius = 10;
-      } 
+      }
       else {
         node.radius = 5;
       }
@@ -45,22 +45,25 @@ const NetworkGraph = () => {
     const simulation = d3.forceSimulation(nodes)
       .force('link', d3.forceLink(edges).id(d => d.id).distance(100).strength(.1))
       .force('collide', d3.forceCollide().radius(d => d.radius + 15))
-      .force('charge', d3.forceManyBody().strength(d => -10 * d.radius)) 
-      .force('center', d3.forceCenter(width/2, height/2));
+      .force('charge', d3.forceManyBody().strength(d => -10 * d.radius))
+      .force('center', d3.forceCenter(width / 2, height / 2));
 
     const link = svg.selectAll('line')
       .data(edges)
       .enter().append('line')
       .attr('stroke', '#999')
-      .attr('stroke-width', d => 1);
+      .attr('stroke-width', 2.5);
 
-    simulation.on('tick', function() {
+    link.append('title')
+      .text(d => d["Event Type"]);
+
+    simulation.on('tick', function () {
       node.attr('cx', d => d.x)
-          .attr('cy', d => d.y);
+        .attr('cy', d => d.y);
       link.attr('x1', d => d.source.x)
-          .attr('y1', d => d.source.y)
-          .attr('x2', d => d.target.x)
-          .attr('y2', d => d.target.y);
+        .attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x)
+        .attr('y2', d => d.target.y);
     });
 
     const node = svg.selectAll('circle')
@@ -72,7 +75,7 @@ const NetworkGraph = () => {
         if (d.id === 'AAVE: POOL' || d.id === 'COMPOUND: POOL' || d.id === 'PRISMA: POOL') {
           return 'specific-node';
         }
-        
+
         else if (d.id.startsWith('AAVE: ')) {
           return 'aave-node';
         }
@@ -85,8 +88,6 @@ const NetworkGraph = () => {
     node.append('title')
       .text(d => d.id);
 
-    edges.append('title')
-      .text(d => d.Reserve);
   };
 
   return (
