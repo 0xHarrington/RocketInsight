@@ -86,6 +86,22 @@
     margin-top: 10px;
   }
 
+  .specific-node {
+    fill: red;
+    stroke: black;
+    stroke-width: 2;
+  }
+
+  .aave-node {
+    fill: yellow;
+    stroke: black;
+    stroke-width: 2;
+  }
+  
+  .normal-node {
+    fill: steelblue;
+  }
+
   .viz h2 {
     text-align: center;
     color: white;
