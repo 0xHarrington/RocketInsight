@@ -13,8 +13,8 @@ import schedule
 import time
 from datetime import datetime, timezone, timedelta
 
-FULL_LOOKBACK = 1
-STANDARD_LOOKBACK = 10
+FULL_LOOKBACK = 365
+STANDARD_LOOKBACK = 90
 UPDATE_LOOKBACK = 1
 
 ALL_MARKETS = ["AAVE", "COMPOUND", "PRISMA"]
