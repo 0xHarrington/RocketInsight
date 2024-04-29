@@ -17,18 +17,18 @@ const LineGraph = ({ market, timeframe }) => {
       .then(response => {
         console.log('Before sort:', response.data);
         const groupedData = d3.groups(response.data, d => d.Data_Type)
-        .map(([key, values]) => {
-          // Convert Timestamp from seconds to milliseconds and sort
-          const sortedValues = values.map(d => ({
-            ...d,
-            Timestamp: d.Timestamp * 1000  // Convert to milliseconds
-          })).sort((a, b) => a.Timestamp - b.Timestamp);  // Sort by Timestamp
+          .map(([key, values]) => {
+            // Convert Timestamp from seconds to milliseconds and sort
+            const sortedValues = values.map(d => ({
+              ...d,
+              Timestamp: d.Timestamp * 1000  // Convert to milliseconds
+            })).sort((a, b) => a.Timestamp - b.Timestamp);  // Sort by Timestamp
             return {
               type: key,
               values: sortedValues.map(d => ({ x: new Date(d.Timestamp), y: d.Value }))
             };
           });
-        console.log('After sort:', groupedData);  
+        console.log('After sort:', groupedData);
         setData(groupedData);
       })
       .catch(error => {
@@ -78,7 +78,8 @@ const LineGraph = ({ market, timeframe }) => {
       .attr('x', width / 2 + margin.left) // Adjusted position
       .attr('y', margin.bottom - 10)
       .attr('text-anchor', 'middle')
-      .style('fill', 'red') // Change label color
+      .style('fill', 'white')
+      .style('font-size', '18px')
       .text('Month');
 
     svg.append('g')
@@ -89,7 +90,8 @@ const LineGraph = ({ market, timeframe }) => {
       .attr('x', -height / 2 - margin.top) // Adjusted position
       .attr('y', -margin.left + 15)
       .attr('text-anchor', 'middle')
-      .style('fill', 'blue') // Change label color
+      .style('fill', 'white')
+      .style('font-size', '18px')
       .text('Value');
 
     const line = d3.line()
@@ -103,18 +105,6 @@ const LineGraph = ({ market, timeframe }) => {
         .attr('stroke', colors(i))
         .attr('stroke-width', 2)
         .attr('d', line);
-        // .on("mouseover", (event, d) => {
-        //   const [x, y] = d3.pointer(event);
-        //   d3.select(tooltipRef.current)
-        //     .style('visibility', 'visible')
-        //     .html(`<strong>${series.type}</strong><br/>X: ${d3.timeFormat('%B')(d.x)}, Y: ${d.y}`)
-        //     .style('left', x + 'px')
-        //     .style('top', y + 'px');
-        // })
-        // .on("mouseout", () => {
-        //   d3.select(tooltipRef.current)
-        //     .style('visibility', 'hidden');
-        // });
       svg.selectAll(`.dot-${i}`)
         .data(series.values)
         .enter().append('circle')
@@ -127,28 +117,23 @@ const LineGraph = ({ market, timeframe }) => {
           const tooltip = d3.select(tooltipRef.current);
           const formattedY = (d.y).toFixed(2);
           tooltip.style('visibility', 'visible')
-                 .style('opacity', 1)  // Make sure to set opacity to 1
-                 .html(`<strong>${series.type}</strong><br/>Time: ${d3.timeFormat('%B %d, %Y')(d.x)}, Amount: ${formattedY}`)
-                 .style('left', `${event.pageX + 10}px`)
-                 .style('top', `${event.pageY + 10}px`);
+            .style('opacity', 1)  // Make sure to set opacity to 1
+            .html(`<strong>${series.type}</strong><br/>Time: ${d3.timeFormat('%B %d, %Y')(d.x)}, Amount: ${formattedY}`)
+            .style('left', `${event.pageX + 10}px`)
+            .style('top', `${event.pageY + 10}px`);
         })
         .on("mouseout", () => {
           d3.select(tooltipRef.current)
             .style('visibility', 'hidden')
             .style('opacity', 0);  // Reset opacity
         });
-        
-
     });
-
-    // Optional: Add labels or other elements per series
-
   }, [data]);
 
   return (
     <div className="viz">
       <h2>Line Graph</h2>
-      <svg ref={svgRef} width={600} height={400}></svg>
+      <svg ref={svgRef} width={1200} height={750} ></svg>
       <div ref={tooltipRef} className="tooltip"></div>
     </div>
   );

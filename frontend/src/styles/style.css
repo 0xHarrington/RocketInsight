@@ -233,7 +233,8 @@
     width: auto;
     padding: 8px;
     font: 12px sans-serif;
-    background: lightsteelblue;
+    color:#282828;
+    background: #EBDBB2;
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
@@ -687,6 +688,10 @@
           display:inline;
         }
   }
-  
-  
-  
+
+  svg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4em;
+  }
