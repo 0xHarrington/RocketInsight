@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
+import '../styles/style.css';
 
-const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
+const LineGraph = ({ market, timeframe }) => {
   const [data, setData] = useState([]);
   const svgRef = useRef();
+  const tooltipRef = useRef();
 
   useEffect(() => {
     fetchData(market, timeframe);
@@ -13,15 +15,20 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
   const fetchData = (market, timeframe) => {
     axios.get(`http://localhost:5000/api/historical_data?market=${market}&timeframe=${timeframe}`)
       .then(response => {
+        console.log('Before sort:', response.data);
         const groupedData = d3.groups(response.data, d => d.Data_Type)
-          .map(([key, values]) => {
-            const sortedValues = values.sort((a, b) => a.Timestamp - b.Timestamp); // Sort by Timestamp
+        .map(([key, values]) => {
+          // Convert Timestamp from seconds to milliseconds and sort
+          const sortedValues = values.map(d => ({
+            ...d,
+            Timestamp: d.Timestamp * 1000  // Convert to milliseconds
+          })).sort((a, b) => a.Timestamp - b.Timestamp);  // Sort by Timestamp
             return {
               type: key,
-              values: sortedValues.map(d => ({ x: d.Timestamp, y: d.Value }))
+              values: sortedValues.map(d => ({ x: new Date(d.Timestamp), y: d.Value }))
             };
           });
-        console.log('Grouped data:', groupedData); // Debugging output
+        console.log('After sort:', groupedData);  
         setData(groupedData);
       })
       .catch(error => {
@@ -29,58 +36,120 @@ const LineGraph = ({ market = 'AAVE', timeframe = 365 }) => {
       });
   };
 
-
   useEffect(() => {
     if (data.length === 0) return;
 
     const svg = d3.select(svgRef.current);
-    const width = +svg.attr('width');
-    const height = +svg.attr('height');
+    const margin = { top: 20, right: 30, bottom: 60, left: 80 }; // Increased bottom and left margin for labels
+    const width = +svg.attr('width') - margin.left - margin.right;
+    const height = +svg.attr('height') - margin.top - margin.bottom;
     svg.selectAll("*").remove(); // Clear previous contents
 
-    const xScale = d3.scaleLinear()
-      .domain([d3.min(data, series => d3.min(series.values, d => d.x)),
-      d3.max(data, series => d3.max(series.values, d => d.x))])
-      .range([0, width]);
+    const xScale = d3.scaleTime()
+      .domain([
+        d3.min(data, series => d3.min(series.values, d => d.x)),
+        d3.max(data, series => d3.max(series.values, d => d.x))
+      ])
+      .range([margin.left, width + margin.left]); // Adjust range to include margins
 
     const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, series => d3.max(series.values, d => d.y))])
-      .range([height, 0]);
+      .domain([
+        0, // Minimum y-value (could be adjusted if necessary)
+        d3.max(data, series => d3.max(series.values, d => d.y))
+      ])
+      .nice() // Round the y-axis domain for better readability
+      .range([height + margin.top, margin.top]); // Adjust range to include margins
 
     const colors = d3.scaleOrdinal(d3.schemeCategory10); // Color scale for different lines
 
+    const xAxis = d3.axisBottom(xScale)
+      .tickSizeOuter(0) // Remove outer ticks
+      .tickPadding(10) // Padding between ticks and labels
+      .tickFormat(d3.timeFormat("%B")); // Format tick labels as month names
+
+    const yAxis = d3.axisLeft(yScale)
+      .tickSizeOuter(0) // Remove outer ticks
+      .tickPadding(10); // Padding between ticks and labels
+
+    svg.append('g')
+      .attr('transform', `translate(0,${height + margin.top})`) // Adjusted translation
+      .call(xAxis)
+      .append('text') // X-axis label
+      .attr('x', width / 2 + margin.left) // Adjusted position
+      .attr('y', margin.bottom - 10)
+      .attr('text-anchor', 'middle')
+      .style('fill', 'red') // Change label color
+      .text('Month');
+
+    svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`)
+      .call(yAxis)
+      .append('text') // Y-axis label
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2 - margin.top) // Adjusted position
+      .attr('y', -margin.left + 15)
+      .attr('text-anchor', 'middle')
+      .style('fill', 'blue') // Change label color
+      .text('Value');
+
+    const line = d3.line()
+      .x(d => xScale(d.x))
+      .y(d => yScale(d.y));
 
     data.forEach((series, i) => {
-      const line = d3.line()
-        .x(d => xScale(d.x))
-        .y(d => yScale(d.y));
-
       svg.append('path')
         .datum(series.values)
         .attr('fill', 'none')
         .attr('stroke', colors(i))
         .attr('stroke-width', 2)
         .attr('d', line);
+        // .on("mouseover", (event, d) => {
+        //   const [x, y] = d3.pointer(event);
+        //   d3.select(tooltipRef.current)
+        //     .style('visibility', 'visible')
+        //     .html(`<strong>${series.type}</strong><br/>X: ${d3.timeFormat('%B')(d.x)}, Y: ${d.y}`)
+        //     .style('left', x + 'px')
+        //     .style('top', y + 'px');
+        // })
+        // .on("mouseout", () => {
+        //   d3.select(tooltipRef.current)
+        //     .style('visibility', 'hidden');
+        // });
+      svg.selectAll(`.dot-${i}`)
+        .data(series.values)
+        .enter().append('circle')
+        .attr('class', `dot-${i}`)
+        .attr('cx', d => xScale(d.x))
+        .attr('cy', d => yScale(d.y))
+        .attr('r', 2.5)
+        .attr('fill', colors(i))
+        .on("mouseover", (event, d) => {
+          const tooltip = d3.select(tooltipRef.current);
+          const formattedY = (d.y).toFixed(2);
+          tooltip.style('visibility', 'visible')
+                 .style('opacity', 1)  // Make sure to set opacity to 1
+                 .html(`<strong>${series.type}</strong><br/>Time: ${d3.timeFormat('%B %d, %Y')(d.x)}, Amount: ${formattedY}`)
+                 .style('left', `${event.pageX + 10}px`)
+                 .style('top', `${event.pageY + 10}px`);
+        })
+        .on("mouseout", () => {
+          d3.select(tooltipRef.current)
+            .style('visibility', 'hidden')
+            .style('opacity', 0);  // Reset opacity
+        });
+        
 
-      // Optional: Add labels or other elements per series
     });
 
-    // Draw x and y axes
-    svg.append('g')
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(xScale));
+    // Optional: Add labels or other elements per series
 
-    svg.append('g')
-      .call(d3.axisLeft(yScale));
   }, [data]);
 
-
   return (
-    <div class="viz">
-        <h2>Line Graph</h2>
-        <br />
-        <svg ref={svgRef} width={600} height={400}></svg>
-        <br />
+    <div className="viz">
+      <h2>Line Graph</h2>
+      <svg ref={svgRef} width={600} height={400}></svg>
+      <div ref={tooltipRef} className="tooltip"></div>
     </div>
   );
 };
