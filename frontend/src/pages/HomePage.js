@@ -5,6 +5,7 @@ import MarketTable from '../Components/MarketTable';
 import '../styles/style.css';
 
 const HomePage = () => {
+
     return (
         <div id="page-formatting">
             <Container>
@@ -14,7 +15,7 @@ const HomePage = () => {
                     <div className="subheading">
                         <h3 align="center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
                     </div>
-                    <LineGraph market="AAVE" timeframe={365} />
+                    <LineGraph market = "All Markets" timeframe={365} />
                     <h2 align="center">Protocols with rEth Assets</h2>
                     {/* <MarketTable showpage={showpage} handlepage={handlepage} /> */}
                     <br />
