@@ -22,8 +22,8 @@ const NetworkGraph = ({ userAddress, market }) => {
   };
 
   const renderGraph = data => {
-    const width = 800;
-    const height = 800;
+    const width = window.innerWidth - 100;
+    const height = window.innerHeight - 100;
 
     const svg = d3.select(svgRef.current)
       .attr('width', width)
@@ -35,25 +35,26 @@ const NetworkGraph = ({ userAddress, market }) => {
     const edges = data.edges;
     nodes.forEach(node => {
       if (node.id === 'AAVE: POOL' || node.id === 'COMPOUND: POOL' || node.id === 'PRISMA: POOL') {
-        node.radius = 30;
+        node.radius = 35;
       } else if (node.id.startsWith('AAVE: ')) {
-        node.radius = 15;
+        node.radius = 20;
       } else {
-        node.radius = 7.5;
+        node.radius = 10;
       }
     });
 
     const simulation = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(edges).id(d => d.id).distance(125).strength(0.25))
-      .force('collide', d3.forceCollide().radius(d => d.radius))
-      .force('charge', d3.forceManyBody().strength(d => -3 * d.radius))
-      .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1));
+      // ensure that the nodes do not overlap
+      .force('link', d3.forceLink(edges).id(d => d.id).distance(100).strength(0.2))
+      .force('collide', d3.forceCollide().radius(d => d.radius + 4.2))
+      .force('charge', d3.forceManyBody().strength(d => -2 * d.radius))
+      .force('center', d3.forceCenter(width / 2, height / 2).strength(0.420));
 
     const link = svg.selectAll('line')
       .data(edges)
       .enter().append('line')
-      .attr('stroke', '#999')
-      .attr('stroke-width', 4.20);
+      .attr('stroke', '#EBDBB2')
+      .attr('stroke-width', 4.2);
 
     link.append('title')
       .text(d => d["Event Type"]);
