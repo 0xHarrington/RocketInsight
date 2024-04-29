@@ -5,18 +5,18 @@ import '../styles/style.css';
 import { Container } from 'react-bootstrap';
 
 const Aave = () => (
-    <div id ="page-formatting">
+    <div id="page-formatting">
         <Container>
             <div className="page">
                 <br />
                 {/* Market-specific content */}
                 <h1>Aave Overview</h1>
-                <LineGraph market="AAVE" timeframe={365} />
+                <LineGraph market="AAVE" timeframe={420} subtitle={"Historical Aave Open Interest"} />
                 {/* Any additional content */}
                 <MarketTable />
                 <br />
-                </div>
-        </Container>        
+            </div>
+        </Container>
     </div>
 );
 

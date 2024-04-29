@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import axios from 'axios';
 import '../styles/style.css';
 
-const LineGraph = ({ market, timeframe }) => {
+const LineGraph = ({ market, timeframe, subtitle }) => {
   const [data, setData] = useState([]);
   const svgRef = useRef();
   const tooltipRef = useRef();
@@ -132,7 +132,7 @@ const LineGraph = ({ market, timeframe }) => {
 
   return (
     <div className="viz">
-      <h2>Line Graph</h2>
+      {subtitle && <h4>{subtitle}</h4>}
       <svg ref={svgRef} width={1200} height={750} ></svg>
       <div ref={tooltipRef} className="tooltip"></div>
     </div>

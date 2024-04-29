@@ -5,18 +5,18 @@ import '../styles/style.css';
 import { Container } from 'react-bootstrap';
 
 const Prisma = () => (
-    <div id ="page-formatting">
+    <div id="page-formatting">
         <Container>
             <div className="page">
                 <br />
                 {/* Market-specific content */}
                 <h1>Prisma Overview</h1>
-                <LineGraph market="PRISMA" timeframe={365} />
+                <LineGraph market="PRISMA" timeframe={365} subtitle={"Historical Prisma Open Interest"} />
                 {/* Any additional content */}
                 <MarketTable />
                 <br />
-                </div>
-        </Container>        
+            </div>
+        </Container>
     </div>
 );
 
