@@ -55,12 +55,21 @@ for line in lines:
             known_addresses[ethereum_address.group()] = variable_name
 
 
+def convert_to_first_upper(snake_case_list):
+    # Convert each snake_case string: first letter of each word to uppercase
+    first_upper_list = [
+        " ".join(word.capitalize() for word in s.split("_")) for s in snake_case_list
+    ]
+    return first_upper_list
+
+
 def generate_network(transaction_df: pd.DataFrame):
     # Create json dict from transaction df
 
-    transaction_df = transaction_df.copy()
-    # Filter out transactions with diminishingly small amounts
-    transaction_df = transaction_df[transaction_df["Amount"] > 1e-10]
+    print(transaction_df.columns)
+    if "Event Type" not in transaction_df.columns:
+        # dynamically cast column names to uppercase if the input df is lowercase
+        transaction_df.columns = convert_to_first_upper(transaction_df.columns)
 
     nodes = set()
     edges = []

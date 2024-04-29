@@ -44,19 +44,19 @@ const NetworkGraph = ({ userAddress, market }) => {
     });
 
     const simulation = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(edges).id(d => d.id).distance(100).strength(0.1))
-      .force('collide', d3.forceCollide().radius(d => d.radius + 15))
-      .force('charge', d3.forceManyBody().strength(d => -10 * d.radius))
-      .force('center', d3.forceCenter(width / 2, height / 2));
+      .force('link', d3.forceLink(edges).id(d => d.id).distance(125).strength(0.25))
+      .force('collide', d3.forceCollide().radius(d => d.radius))
+      .force('charge', d3.forceManyBody().strength(d => -3 * d.radius))
+      .force('center', d3.forceCenter(width / 2, height / 2).strength(0.1));
 
     const link = svg.selectAll('line')
       .data(edges)
       .enter().append('line')
       .attr('stroke', '#999')
-      .attr('stroke-width', 2.5);
+      .attr('stroke-width', 4.20);
 
     link.append('title')
-      .text(d => d.event_type);
+      .text(d => d["Event Type"]);
 
     const node = svg.selectAll('circle')
       .data(nodes)

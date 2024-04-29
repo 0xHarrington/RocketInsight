@@ -1,6 +1,7 @@
 import pandas as pd
 from flask import Blueprint, jsonify, request
 from app.models import *
+from app.transactions_network_generator import generate_network
 from pprint import pprint
 
 api = Blueprint("api", __name__)
@@ -50,36 +51,6 @@ def user_history():
     graph_data = generate_network(data)
 
     return jsonify(graph_data)
-
-
-def generate_network(transaction_df: pd.DataFrame):
-    nodes = set()
-    edges = []
-
-    for _, row in transaction_df.iterrows():
-        user = row["user"]
-        address = row["address"]
-        amount = float(row["amount"])
-        event_type = row["event_type"]
-
-        # Store nodes
-        nodes.add(user)
-        nodes.add(address)
-
-        # Store edge
-        edges.append(
-            {
-                "source": user,
-                "target": address,
-                "weight": amount,
-                "event_type": event_type,
-            }
-        )
-
-    # Convert nodes set to list of dictionaries
-    nodes_list = [{"id": node} for node in nodes if node is not None]
-
-    return {"nodes": nodes_list, "edges": edges}
 
 
 ## NOTE: Deprecated endpoints :(
