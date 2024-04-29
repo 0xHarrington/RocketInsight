@@ -1,3 +1,4 @@
+import pandas as pd
 from flask import Blueprint, jsonify, request
 from app.models import *
 from pprint import pprint
@@ -29,48 +30,56 @@ def all_markets():
 
 @api.route("/user_history", methods=["GET"])
 def user_history():
-    user_addresses = request.args.getlist("user_address")
-    markets = request.args.getlist("market")
+    user_address = request.args.get("user_address")
+    market = request.args.get("market")
 
-    # Initialize an empty list to store user history data
-    user_history_data = []
+    # Dynamically apply filters based on query parameters
+    query = UserHistory.query
+    if user_address:
+        query = query.filter_by(address=user_address)
+    if market:
+        query = query.filter_by(reserve=market)
 
-    # Iterate over each user address and market to fetch user history
-    for user_address in user_addresses:
-        for market in markets:
-            # Query the database to fetch user history based on user address and market
-            user_history_records = NewUserHistory.query.filter_by(
-                address=user_address, reserve=market
-            ).all()
+    # Execute the query
+    history_records = query.all()
 
-            # Process fetched records and append them to user_history_data list
-            for record in user_history_records:
-                history_entry = {
-                    "id": record.id,
-                    "timestamp": record.timestamp,
-                    "event_type": record.event_type,
-                    "transaction_hash": record.transaction_hash,
-                    "address": record.address,
-                    "block_hash": record.block_hash,
-                    "block_number": record.block_number,
-                    "reserve": record.reserve,
-                    "on_behalf_of": record.on_behalf_of,
-                    "user": record.user,
-                    "amount": record.amount,
-                    "borrow_rate": record.borrow_rate,
-                    "repayer": record.repayer,
-                    "use_atokens": record.use_atokens,
-                    "to": record.to,
-                    "target": record.target,
-                    "asset": record.asset,
-                    "referral_code": record.referral_code,
-                    "initiator": record.initiator,
-                    "premium": record.premium,
-                    # Add more fields as needed from the NewUserHistory model
-                }
-                user_history_data.append(history_entry)
+    # Convert records to DataFrame for easier processing
+    data = pd.DataFrame([record.to_dict() for record in history_records])
 
-    return jsonify(user_history_data)
+    # Generate network data
+    graph_data = generate_network(data)
+
+    return jsonify(graph_data)
+
+
+def generate_network(transaction_df: pd.DataFrame):
+    nodes = set()
+    edges = []
+
+    for _, row in transaction_df.iterrows():
+        user = row["user"]
+        address = row["address"]
+        amount = float(row["amount"])
+        event_type = row["event_type"]
+
+        # Store nodes
+        nodes.add(user)
+        nodes.add(address)
+
+        # Store edge
+        edges.append(
+            {
+                "source": user,
+                "target": address,
+                "weight": amount,
+                "event_type": event_type,
+            }
+        )
+
+    # Convert nodes set to list of dictionaries
+    nodes_list = [{"id": node} for node in nodes if node is not None]
+
+    return {"nodes": nodes_list, "edges": edges}
 
 
 ## NOTE: Deprecated endpoints :(
