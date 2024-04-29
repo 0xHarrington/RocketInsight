@@ -10,16 +10,16 @@ const MarketTable = () => (
                     Protocol
                 </td>
                 <td>
-                    Total Supplied
+                    Total Supplied (rETH)
                 </td>
                 <td>
-                    Total Borrowed
+                    Total Borrowed (rETH)
                 </td>
                 <td>
-                    Supply APY
+                    Supply APR
                 </td>
                 <td>
-                    Borrow APY
+                    Borrow APR
                 </td>
             </tr>
         </thead>
@@ -27,50 +27,50 @@ const MarketTable = () => (
             <tr>
                 <td><a href="https://app.aave.com/reserve-overview/?underlyingAsset=0xae78736cd615f374d3085123a210448e74fc6393&marketName=proto_mainnet_v3">AAVE</a></td>
                 <td>
-                    47.68K
+                    39.4k ($139.8M)
                 </td>
                 <td>
-                    74.86K
-                </td>
-                <td>
-                    0.01%
+                    802.38 ($2.8M)
                 </td>
                 <td>
                     0.01%
+                </td>
+                <td>
+                    0.32%
                 </td>
             </tr>
             <tr>
                 <td>
-                    <   a href="https://app.compound.finance/markets/weth-mainnet">Compound</a>
+                    <a href="ipfs://bafybeidoerbumwzpj65fgxvylsttbucp2tvelplvz4kagjumsherdiip5m/markets/weth-mainnet">Compound</a>
                 </td>
                 <td>
-                    47.68K
+                    152.3 ($542.67k)
                 </td>
                 <td>
-                    74.86K
+                    N/A
                 </td>
                 <td>
-                    0.01%
+                    1.08%
                 </td>
                 <td>
-                    0.01%
+                    1.82%
                 </td>
             </tr>
             <tr>
                 <td>
-                    <a href="https://app.uniswap.org/explore/tokens/ethereum/0xae78736cd615f374d3085123a210448e74fc6393">Prisma</a>
+                    <a href="https://app.prismafinance.com/vaults">Prisma</a>
                 </td>
                 <td>
-                    47.68K
+                    2.57k ($9.3M)
                 </td>
                 <td>
                     74.86K
                 </td>
                 <td>
-                    0.01%
+                    6.6%
                 </td>
                 <td>
-                    0.01%
+                    15%
                 </td>
             </tr>
         </tbody>
