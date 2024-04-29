@@ -10,7 +10,7 @@ const MarketPage = () => (
             <br />
             {/* Market-specific content */}
             <h1>Market Overview</h1>
-            <LineGraph />
+            <LineGraph market="PRISMA" timeframe={365} />
             {/* Any additional content */}
             <MarketTable />
             <br />
