@@ -217,6 +217,21 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    visibility: hidden;  /* Start hidden */
+    opacity: 0;          /* Start fully transparent */
+    transition: opacity 0.5s; /* Smooth transition for the tooltip */
+  }
   
   #c-options { /*Mobile view of category filter*/
     align-items: center;
