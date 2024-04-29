@@ -10,9 +10,6 @@ const MarketTable = () => (
                     Protocol
                 </td>
                 <td>
-                    URL
-                </td>
-                <td>
                     Total Supplied
                 </td>
                 <td>
@@ -20,6 +17,9 @@ const MarketTable = () => (
                 </td>
                 <td>
                     Supply APY
+                </td>
+                <td>
+                    Borrow APY
                 </td>
             </tr>
         </thead>
@@ -41,7 +41,7 @@ const MarketTable = () => (
             </tr>
             <tr>
                 <td>
-                <   a href="https://app.compound.finance/markets/weth-mainnet">Compound</a>
+                    <   a href="https://app.compound.finance/markets/weth-mainnet">Compound</a>
                 </td>
                 <td>
                     47.68K
@@ -58,7 +58,7 @@ const MarketTable = () => (
             </tr>
             <tr>
                 <td>
-                    <a href="https://app.uniswap.org/explore/tokens/ethereum/0xae78736cd615f374d3085123a210448e74fc6393">Uniswap</a>
+                    <a href="https://app.uniswap.org/explore/tokens/ethereum/0xae78736cd615f374d3085123a210448e74fc6393">Prisma</a>
                 </td>
                 <td>
                     47.68K
