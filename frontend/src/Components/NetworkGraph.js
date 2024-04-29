@@ -45,10 +45,10 @@ const NetworkGraph = ({ userAddress, market }) => {
 
     const simulation = d3.forceSimulation(nodes)
       // ensure that the nodes do not overlap
-      .force('link', d3.forceLink(edges).id(d => d.id).distance(100).strength(0.2))
-      .force('collide', d3.forceCollide().radius(d => d.radius + 4.2))
-      .force('charge', d3.forceManyBody().strength(d => -2 * d.radius))
-      .force('center', d3.forceCenter(width / 2, height / 2).strength(0.420));
+      .force('link', d3.forceLink(edges).id(d => d.id).distance(100).strength(0.25))
+      .force('collide', d3.forceCollide().radius(d => d.radius + 1))
+      .force('charge', d3.forceManyBody().strength(d => -3 * d.radius))
+      .force('center', d3.forceCenter(width / 2, height / 2).strength(0.69));
 
     const link = svg.selectAll('line')
       .data(edges)

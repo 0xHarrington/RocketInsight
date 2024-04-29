@@ -1,6 +1,6 @@
 import React from 'react';
 import NetworkGraph from '../Components/NetworkGraph';
-import WalletTable from '../Components/WalletTable';
+// import WalletTable from '../Components/WalletTable';
 import { Container } from 'react-bootstrap';
 import '../styles/style.css';
 
@@ -12,7 +12,7 @@ const WalletPage = () => (
                 <h5>Mouse over the nodes & edges to see the users & their actions!</h5>
             </div>
             <NetworkGraph />
-            <WalletTable />
+            {/* <WalletTable /> */}
             <br />
         </Container>
     </div>
