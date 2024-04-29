@@ -1,5 +1,7 @@
+import pandas as pd
 from flask import Blueprint, jsonify, request
 from app.models import *
+from app.transactions_network_generator import generate_network
 from pprint import pprint
 
 api = Blueprint("api", __name__)
@@ -19,7 +21,7 @@ def historical_data():
 
 @api.route("/all_markets", methods=["GET"])
 def all_markets():
-    # This endpoint might not need arguments based on the initial description
+    # This endpoint will populate the landing page table
     markets_data = {
         "market1": {"url": "https://market1.example.com"},
         "market2": {"url": "https://market2.example.com"},
@@ -29,48 +31,26 @@ def all_markets():
 
 @api.route("/user_history", methods=["GET"])
 def user_history():
-    user_addresses = request.args.getlist("user_address")
-    markets = request.args.getlist("market")
+    user_address = request.args.get("user_address")
+    market = request.args.get("market")
 
-    # Initialize an empty list to store user history data
-    user_history_data = []
+    # Dynamically apply filters based on query parameters
+    query = UserHistory.query
+    if user_address:
+        query = query.filter_by(address=user_address)
+    if market:
+        query = query.filter_by(reserve=market)
 
-    # Iterate over each user address and market to fetch user history
-    for user_address in user_addresses:
-        for market in markets:
-            # Query the database to fetch user history based on user address and market
-            user_history_records = NewUserHistory.query.filter_by(
-                address=user_address, reserve=market
-            ).all()
+    # Execute the query
+    history_records = query.all()
 
-            # Process fetched records and append them to user_history_data list
-            for record in user_history_records:
-                history_entry = {
-                    "id": record.id,
-                    "timestamp": record.timestamp,
-                    "event_type": record.event_type,
-                    "transaction_hash": record.transaction_hash,
-                    "address": record.address,
-                    "block_hash": record.block_hash,
-                    "block_number": record.block_number,
-                    "reserve": record.reserve,
-                    "on_behalf_of": record.on_behalf_of,
-                    "user": record.user,
-                    "amount": record.amount,
-                    "borrow_rate": record.borrow_rate,
-                    "repayer": record.repayer,
-                    "use_atokens": record.use_atokens,
-                    "to": record.to,
-                    "target": record.target,
-                    "asset": record.asset,
-                    "referral_code": record.referral_code,
-                    "initiator": record.initiator,
-                    "premium": record.premium,
-                    # Add more fields as needed from the NewUserHistory model
-                }
-                user_history_data.append(history_entry)
+    # Convert records to DataFrame for easier processing
+    data = pd.DataFrame([record.to_dict() for record in history_records])
 
-    return jsonify(user_history_data)
+    # Generate network data
+    graph_data = generate_network(data)
+
+    return jsonify(graph_data)
 
 
 ## NOTE: Deprecated endpoints :(

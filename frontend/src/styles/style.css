@@ -87,21 +87,21 @@
   }
 
   .specific-node {
-    fill: red;
-    stroke: black;
-    stroke-width: 2;
+    fill: #0275d8;
+    stroke: #f7f7f7;
+    stroke-width: 1;
   }
 
   .aave-node {
-    fill: yellow;
-    stroke: black;
-    stroke-width: 2;
+    fill: #f0ad4e;
+    stroke: #f7f7f7;
+    stroke-width: 1;
   }
   
   .normal-node {
-    fill: steelblue;
-    stroke: black;
-    stroke-width: 2;
+    fill: #5cb85c;
+    stroke: #f7f7f7;
+    stroke-width: 1;
   }
 
   .viz h2 {
@@ -132,14 +132,23 @@
   
   #page h1 { /*Main page heading*/
     text-align: center;
-    color:#FF7518;
+    color:#FE8019;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 25px;
   }
 
   .subheading h3 {
+    text-align: center;
     margin-top: 10px;
     font-size:1.6rem !important;
+    color:#FE8019;
+  }
+
+  .subheading h5 {
+    text-align: center;
+    margin-top: 10px;
+    color:#D65D0E;
   }
   
   .page a { /*For all links on page designed to look like button*/

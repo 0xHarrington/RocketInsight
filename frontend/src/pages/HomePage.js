@@ -13,7 +13,7 @@ const HomePage = () => {
                     <br />
                     <h1>Welcome to RocketInsight</h1>
                     <div className="subheading">
-                        <h3 align="center">Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
+                        <h3>Statistics, analytics and more, to help you make informed decisions with your rEth.</h3>
                     </div>
                     <LineGraph market = "All Markets" timeframe={365} />
                     <h2 align="center">Protocols with rEth Assets</h2>

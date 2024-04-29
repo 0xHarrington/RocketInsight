@@ -26,27 +26,26 @@ class HistoricalData(db.Model):
 
 
 class UserHistory(db.Model):
-    # set table name to CamelCase version of class name
     __tablename__ = "UserHistory"
 
-    id = db.Column(db.Integer, primary_key=True)
-    event_type = db.Column(db.String(255), nullable=True)
-    transaction_hash = db.Column(db.String(255), nullable=True)
-    address = db.Column(db.String(255), nullable=True)
-    block_hash = db.Column(db.String(255), nullable=True)
-    block_number = db.Column(db.Integer, nullable=True)
-    reserve = db.Column(db.String(255), nullable=True)
-    on_behalf_of = db.Column(db.String(255), nullable=True)
-    user = db.Column(db.String(255), nullable=True)
-    amount = db.Column(db.Integer, nullable=True)
-    borrow_rate = db.Column(db.Float, nullable=True)
-    repayer = db.Column(db.String(255), nullable=True)
-    use_atokens = db.Column(db.Boolean, nullable=True)
-    to = db.Column(db.String(255), nullable=True)
-    target = db.Column(db.String(255), nullable=True)
-    asset = db.Column(db.String(255), nullable=True)
-    initiator = db.Column(db.String(255), nullable=True)
-    premium = db.Column(db.Float, nullable=True)
+    id = db.Column(db.Integer, primary_key=True, name="ID")
+    event_type = db.Column(db.String(255), name="Event Type")
+    transaction_hash = db.Column(db.String(255), name="Transaction Hash")
+    address = db.Column(db.String(255), name="Address")
+    block_hash = db.Column(db.String(255), name="Block Hash")
+    block_number = db.Column(db.Integer, name="Block Number")
+    reserve = db.Column(db.String(255), name="Reserve")
+    on_behalf_of = db.Column(db.String(255), name="On Behalf Of")
+    user = db.Column(db.String(255), name="User")
+    amount = db.Column(db.Integer, name="Amount")
+    borrow_rate = db.Column(db.Float, name="Borrow Rate")
+    repayer = db.Column(db.String(255), name="Repayer")
+    use_atokens = db.Column(db.Boolean, name="useATokens")
+    to = db.Column(db.String(255), name="To")
+    target = db.Column(db.String(255), name="Target")
+    asset = db.Column(db.String(255), name="Asset")
+    initiator = db.Column(db.String(255), name="Initiator")
+    premium = db.Column(db.Float, name="Premium")
 
     def to_dict(self):
         return {
