@@ -64,7 +64,7 @@ const MarketTable = () => (
                     2.57k ($9.3M)
                 </td>
                 <td>
-                    74.86K
+                    N/A
                 </td>
                 <td>
                     6.6%
