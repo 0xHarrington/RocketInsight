@@ -100,6 +100,8 @@ The models.py script contains the database table initializations. It also includ
 
 ## Additional notes
 
+### Before running seed.py:
+
 Ensure that the .env file with the API key exists in the same subdirectory as user_history.py.
 
 Also create a db_backups subdirectory directory in the backend root if no such directory already exists.
